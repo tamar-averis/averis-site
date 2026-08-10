@@ -1,0 +1,102 @@
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/radius.css';
+@import './tokens/elevation.css';
+@import './tokens/motion.css';
+@import './forms.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-body-md);
+  color: var(--text-body);
+  background: var(--surface-card);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--text-heading);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard);
+}
+
+a:hover {
+  color: var(--averis-pine);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  color: var(--text-heading);
+}
+
+p {
+  margin: 0;
+}
+
+/* Components that set display (the contact success panel, toasts) would otherwise
+   beat the UA sheet's [hidden] rule and stay on screen. */
+[hidden] {
+  display: none !important;
+}
+
+/* Focus is always the champagne ring, never the browser default. */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.wrap {
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* The affirmation underline on a headline. Implemented as a background gradient
+   so it survives text wrapping; an absolutely positioned bar would need
+   white-space: nowrap and blow out its grid track. */
+.affirm-underline {
+  background: linear-gradient(var(--accent-line), var(--accent-line)) 0 100% / 100% 6px no-repeat;
+  padding-bottom: 8px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.affirm-underline--light {
+  background-image: linear-gradient(var(--accent-line-on-light), var(--accent-line-on-light));
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 0 var(--section-pad-x-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

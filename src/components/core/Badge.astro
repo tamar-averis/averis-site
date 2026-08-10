@@ -1,0 +1,53 @@
+---
+interface Props {
+  tone?: 'proven' | 'review' | 'neutral' | 'critical' | 'inverse';
+  class?: string;
+}
+
+const { tone = 'neutral', class: className } = Astro.props;
+---
+
+<span class:list={['badge', `badge--${tone}`, className]}><slot /></span>
+
+<style>
+  .badge {
+    font-family: var(--font-ui);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+    border: 1px solid transparent;
+  }
+
+  .badge--proven {
+    background: var(--tint-green-05);
+    color: var(--status-proven);
+    border-color: var(--border-soft);
+  }
+  .badge--review {
+    background: rgba(199, 154, 78, 0.1);
+    color: #8a6a2c;
+    border-color: rgba(199, 154, 78, 0.32);
+  }
+  .badge--neutral {
+    background: var(--surface-neutral);
+    color: var(--averis-slate-mid);
+  }
+  /* The only place the brand's off-red appears. Adverse states only. */
+  .badge--critical {
+    background: var(--status-critical-tint);
+    color: var(--status-critical);
+    border-color: var(--status-critical-border);
+  }
+  .badge--inverse {
+    background: rgba(245, 242, 235, 0.1);
+    color: var(--text-on-inverse);
+    border-color: var(--border-on-inverse);
+  }
+</style>

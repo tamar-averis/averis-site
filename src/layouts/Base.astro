@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+import Header from '../components/site/Header.astro';
+import Footer from '../components/site/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  page?: string;
+}
+
+const { title, description, page } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+  </head>
+  <body>
+    <Header page={page} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline>
+      // Legacy hash routes carried over from the prototype.
+      (function () {
+        if (location.pathname !== '/') return;
+        var map = {
+          '#evidence': '/how-it-works',
+          '#method': '/how-it-works',
+          '#about': '/about',
+          '#contact': '/contact',
+        };
+        var target = map[location.hash];
+        if (target) location.replace(target);
+      })();
+    </script>
+  </body>
+</html>

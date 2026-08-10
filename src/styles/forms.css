@@ -1,0 +1,216 @@
+/* Shared form chrome. Labels are uppercase, tracked .14em, Pine.
+   Focus is always a champagne border plus a soft ring, never browser blue. */
+
+.field {
+  display: block;
+}
+
+.field__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-ui);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-eyebrow);
+  margin-bottom: 8px;
+}
+
+.field__hint {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.field__control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: var(--text-body-md);
+  color: var(--text-strong);
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 13px;
+  width: 100%;
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+.field__control--with-prefix {
+  padding: 0 13px;
+}
+
+.field__control:focus-within {
+  border-color: var(--accent-line-on-light);
+  box-shadow: var(--ring-focus);
+  outline: none;
+}
+
+.field__prefix {
+  color: var(--text-faint);
+  font-size: var(--text-body-sm);
+}
+
+.field__input {
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  padding: 0;
+}
+
+.field__control--with-prefix .field__input {
+  padding: 10px 0;
+}
+
+.field__error {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-ui);
+  font-size: var(--text-caption);
+  color: var(--status-critical);
+}
+
+.field--error .field__control {
+  border-color: var(--status-critical-border);
+}
+
+.field--disabled .field__control {
+  opacity: 0.5;
+}
+
+/* Select: visually identical to Input, custom CSS caret. */
+.field__select {
+  appearance: none;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: var(--text-body-md);
+  color: var(--text-strong);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 34px 10px 13px;
+  width: 100%;
+  outline: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #7a847e 50%),
+    linear-gradient(135deg, #7a847e 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) 50%,
+    calc(100% - 12px) 50%;
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+.field__select:focus {
+  border-color: var(--accent-line-on-light);
+  box-shadow: var(--ring-focus);
+}
+
+/* Choice controls */
+.choice {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
+
+.choice__native {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.choice__box {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+.choice__box--check {
+  border-radius: var(--radius-xs);
+}
+
+.choice__box--radio {
+  border-radius: 50%;
+}
+
+.choice__mark {
+  opacity: 0;
+}
+
+.choice__box--radio .choice__mark {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--interactive-primary);
+}
+
+.choice__native:checked + .choice__box {
+  border-color: var(--interactive-primary);
+}
+
+.choice__native:checked + .choice__box--check {
+  background: var(--interactive-primary);
+}
+
+.choice__native:checked + .choice__box .choice__mark {
+  opacity: 1;
+}
+
+.choice__native:focus-visible + .choice__box {
+  border-color: var(--accent-line-on-light);
+  box-shadow: var(--ring-focus);
+}
+
+.choice__label {
+  display: block;
+  font-size: var(--text-body-md);
+  color: var(--text-strong);
+}
+
+.choice__description {
+  display: block;
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.radio-group__label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-eyebrow);
+  margin-bottom: 10px;
+}
+
+.radio-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

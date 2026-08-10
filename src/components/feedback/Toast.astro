@@ -1,0 +1,82 @@
+---
+import Icon from '../core/Icon.astro';
+
+interface Props {
+  tone?: 'proven' | 'review' | 'neutral' | 'critical';
+  title: string;
+  message?: string;
+  dismissible?: boolean;
+  class?: string;
+}
+
+const { tone = 'neutral', title, message, dismissible = false, class: className } = Astro.props;
+
+const tones = {
+  proven: { icon: 'check', color: 'var(--status-proven)' },
+  review: { icon: 'clock', color: 'var(--status-review)' },
+  neutral: { icon: 'info', color: 'var(--text-muted)' },
+  critical: { icon: 'triangle-alert', color: 'var(--status-critical)' },
+} as const;
+
+const t = tones[tone];
+---
+
+<div role="status" class:list={['toast', className]}>
+  <Icon name={t.icon} size={16} color={t.color} class="toast__icon" />
+  <div class="toast__body">
+    <div class="toast__title">{title}</div>
+    {message && <div class="toast__message">{message}</div>}
+  </div>
+  {
+    dismissible && (
+      <button type="button" class="toast__dismiss" aria-label="Dismiss">
+        &#215;
+      </button>
+    )
+  }
+</div>
+
+<style>
+  .toast {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--surface-card);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-raised);
+    padding: 14px 16px;
+    font-family: var(--font-ui);
+    min-width: 300px;
+    max-width: 420px;
+  }
+
+  .toast :global(.toast__icon) {
+    margin-top: 2px;
+  }
+
+  .toast__body {
+    flex: 1;
+  }
+
+  .toast__title {
+    font-size: var(--text-body-md);
+    font-weight: 600;
+    color: var(--text-strong);
+  }
+
+  .toast__message {
+    font-size: var(--text-body-sm);
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .toast__dismiss {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--text-faint);
+    font-size: 16px;
+    line-height: 1;
+  }
+</style>

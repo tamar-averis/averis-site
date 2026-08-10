@@ -1,0 +1,238 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/site/Section.astro';
+import Eyebrow from '../components/site/Eyebrow.astro';
+import Card from '../components/core/Card.astro';
+import Icon from '../components/core/Icon.astro';
+import Button from '../components/core/Button.astro';
+import Toast from '../components/feedback/Toast.astro';
+import Input from '../components/forms/Input.astro';
+import Select from '../components/forms/Select.astro';
+import Checkbox from '../components/forms/Checkbox.astro';
+import RadioGroup from '../components/forms/RadioGroup.astro';
+import AffirmationLine from '../components/core/AffirmationLine.astro';
+import { FORM_ENDPOINT, INBOX, PHONE } from '../config';
+
+const PAYERS = [
+  { value: 'com', label: 'Commercial' },
+  { value: 'fed', label: 'Federal (Medicare / Medicaid)' },
+  { value: 'both', label: 'Both' },
+];
+
+const ROLES = [
+  { value: 'cfo', label: 'Provider finance or compliance' },
+  { value: 'counsel', label: 'Outside counsel' },
+];
+
+const CONTACT_ROWS = [
+  ['mail', INBOX],
+  ['phone', PHONE],
+  ['shield-check', 'HIPAA-compliant intake, BAA on request'],
+];
+---
+
+<Base
+  title="Averis, Contact"
+  description="Send us the allegation letter. We will read it and the sampling method, and come back with what we would need to test it."
+  page="contact"
+>
+  <Section tone="bone" class="contact">
+    <div class="contact__grid">
+      <div>
+        <Eyebrow>Contact</Eyebrow>
+        <h1 class="contact__heading">Send us the allegation letter.</h1>
+        <p class="contact__body">
+          We will read the letter and the sampling method, and come back with what we would need to test it. No cost for
+          the first read.
+        </p>
+        <AffirmationLine width={90} class="contact__rule" />
+        {
+          CONTACT_ROWS.map(([ic, t]) => (
+            <div class="contact__row">
+              <Icon name={ic} size={16} color="var(--text-faint)" />
+              {ic === 'mail' ? <a href={`mailto:${t}`}>{t}</a> : t}
+            </div>
+          ))
+        }
+      </div>
+
+      <Card padding={30}>
+        <form id="analysis-form" class="form" novalidate data-endpoint={FORM_ENDPOINT} data-inbox={INBOX}>
+          <div class="form__pair">
+            <Input label="Name" name="name" placeholder="Jordan Reyes" required />
+            <Input label="Work email" name="email" type="email" placeholder="jreyes@provider.org" required />
+          </div>
+          <div class="form__pair">
+            <Input label="Organization" name="org" placeholder="Northline Health" />
+            <Select label="Payer type" name="payer" options={PAYERS} value="com" />
+          </div>
+          <Input
+            label="Alleged overpayment / restriction value"
+            name="amount"
+            hint="Optional"
+            prefix="$"
+            placeholder="0.00"
+          />
+          <RadioGroup label="Your role" name="role" options={ROLES} value="cfo" />
+          <Checkbox
+            name="deadline"
+            label="An appeal deadline is already set"
+            description="We will prioritize scoping if a date is on the calendar."
+          />
+          <Button type="submit" size="lg" fullWidth id="analysis-submit">Request an analysis</Button>
+          <p class="form__error" id="analysis-error" hidden>
+            That did not send. Email us directly at <a href={`mailto:${INBOX}`}>{INBOX}</a>.
+          </p>
+          <p class="form__footnote">
+            Do not send protected health information through this form. We will provide a secure channel at intake.
+          </p>
+        </form>
+
+        <div id="analysis-sent" class="sent" hidden>
+          <Toast tone="proven" title="Request received" message="We reply within one business day." />
+          <p class="sent__body">
+            A member of the analysis team will confirm what data we would need to test the allegation.
+          </p>
+          <Button variant="secondary" size="sm" id="analysis-reset">Send another</Button>
+        </div>
+      </Card>
+    </div>
+  </Section>
+</Base>
+
+<script>
+  const form = document.getElementById('analysis-form') as HTMLFormElement | null;
+  const sent = document.getElementById('analysis-sent');
+  const error = document.getElementById('analysis-error');
+  const submit = document.getElementById('analysis-submit') as HTMLButtonElement | null;
+  const reset = document.getElementById('analysis-reset');
+
+  if (form && sent && error && submit && reset) {
+    const endpoint = form.dataset.endpoint ?? '';
+
+    const setState = (state: 'idle' | 'sending' | 'sent' | 'error') => {
+      submit.disabled = state === 'sending';
+      submit.textContent = state === 'sending' ? 'Sending' : 'Request an analysis';
+      error.hidden = state !== 'error';
+      form.hidden = state === 'sent';
+      sent.hidden = state !== 'sent';
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+
+      setState('sending');
+      const payload = Object.fromEntries(new FormData(form).entries());
+
+      if (!endpoint) {
+        // No delivery path configured yet. Fall through to the error state,
+        // which offers the direct address.
+        setState('error');
+        return;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...payload, _subject: `Analysis request, ${payload.org || payload.name}` }),
+        });
+        setState(res.ok ? 'sent' : 'error');
+      } catch {
+        setState('error');
+      }
+    });
+
+    reset.addEventListener('click', () => {
+      form.reset();
+      setState('idle');
+    });
+  }
+</script>
+
+<style>
+  /* .contact rides on <Section>, which carries its own scope and not this
+     page's, so the override has to be global. Same for the rule below. */
+  :global(.contact) {
+    padding: 64px 0 80px;
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .contact__heading {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .contact__body {
+    margin-top: 14px;
+    font-size: var(--text-body-lg);
+    color: var(--text-body);
+  }
+
+  :global(.contact .contact__rule) {
+    margin: 26px 0;
+  }
+
+  .contact__row {
+    display: flex;
+    gap: 11px;
+    align-items: center;
+    padding: 7px 0;
+    font-size: var(--text-body-md);
+    color: var(--text-strong);
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form__error {
+    font-size: var(--text-body-sm);
+    color: var(--status-critical);
+  }
+
+  .form__footnote {
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  .sent {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .sent__body {
+    font-size: var(--text-body-md);
+  }
+
+  @media (max-width: 1000px) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .form__pair {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

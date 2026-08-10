@@ -1,0 +1,36 @@
+---
+interface Props {
+  label: string;
+  description?: string;
+  name?: string;
+  id?: string;
+  value?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  class?: string;
+}
+
+const { label, description, name, id = name, value = 'on', checked = false, disabled = false, class: className } =
+  Astro.props;
+---
+
+<label class:list={['choice', className]} for={id} style={disabled ? 'opacity:.5;cursor:default' : undefined}>
+  <input
+    class="choice__native"
+    type="checkbox"
+    id={id}
+    name={name}
+    value={value}
+    checked={checked}
+    disabled={disabled}
+  />
+  <span class="choice__box choice__box--check">
+    <svg class="choice__mark" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M4 12.5 L9.5 18 L20 6" stroke="#F5F2EB" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </span>
+  <span>
+    <span class="choice__label">{label}</span>
+    {description && <span class="choice__description">{description}</span>}
+  </span>
+</label>

@@ -1,0 +1,90 @@
+---
+interface Props {
+  id?: string;
+  title: string;
+  description?: string;
+  width?: number;
+  class?: string;
+}
+
+const { id, title, description, width = 520, class: className } = Astro.props;
+---
+
+<dialog id={id} class:list={['dialog', className]} style={`--dialog-width:${width}px`} aria-label={title}>
+  <div class="dialog__head">
+    <div>
+      <h3 class="dialog__title">{title}</h3>
+      {description && <p class="dialog__description">{description}</p>}
+    </div>
+    <button type="button" class="dialog__close" aria-label="Close" data-dialog-close>&#215;</button>
+  </div>
+  {Astro.slots.has('default') && <div class="dialog__body"><slot /></div>}
+  {Astro.slots.has('footer') && <div class="dialog__footer"><slot name="footer" /></div>}
+</dialog>
+
+<script>
+  document.querySelectorAll('[data-dialog-close]').forEach((btn) => {
+    btn.addEventListener('click', () => (btn.closest('dialog') as HTMLDialogElement | null)?.close());
+  });
+</script>
+
+<style>
+  .dialog {
+    width: var(--dialog-width);
+    max-width: calc(100% - 48px);
+    border: 0;
+    padding: 26px 26px 22px;
+    background: var(--surface-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-dialog);
+    font-family: var(--font-ui);
+    color: var(--text-body);
+  }
+
+  .dialog::backdrop {
+    background: rgba(15, 54, 48, 0.42);
+    backdrop-filter: blur(3px);
+  }
+
+  .dialog__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .dialog__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-h3);
+    color: var(--text-heading);
+  }
+
+  .dialog__description {
+    margin: 8px 0 0;
+    font-size: var(--text-body-md);
+    color: var(--text-body);
+    max-width: 42ch;
+  }
+
+  .dialog__close {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--text-faint);
+  }
+
+  .dialog__body {
+    margin-top: 18px;
+  }
+
+  .dialog__footer {
+    margin-top: 22px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+</style>

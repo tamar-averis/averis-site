@@ -1,0 +1,81 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  /** Accessible label: required, the button has no text. */
+  label: string;
+  variant?: 'ghost' | 'outline' | 'solid' | 'inverse';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  class?: string;
+}
+
+const { name, label, variant = 'ghost', size = 'md', disabled = false, class: className } = Astro.props;
+const glyphSize = size === 'sm' ? 14 : size === 'lg' ? 20 : 16;
+---
+
+<button
+  type="button"
+  aria-label={label}
+  disabled={disabled}
+  class:list={['icon-btn', `icon-btn--${variant}`, `icon-btn--${size}`, className]}
+>
+  <Icon name={name} size={glyphSize} />
+</button>
+
+<style>
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-heading);
+    cursor: pointer;
+    transition: background var(--duration-base) var(--ease-standard);
+  }
+
+  .icon-btn--sm {
+    width: 28px;
+    height: 28px;
+  }
+  .icon-btn--md {
+    width: 36px;
+    height: 36px;
+  }
+  .icon-btn--lg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .icon-btn--ghost:hover,
+  .icon-btn--outline:hover {
+    background: var(--tint-green-05);
+  }
+
+  .icon-btn--outline {
+    border-color: var(--border-soft);
+  }
+
+  .icon-btn--solid {
+    background: var(--interactive-primary);
+    color: var(--text-on-inverse);
+  }
+  .icon-btn--solid:hover {
+    background: var(--interactive-primary-hover);
+  }
+
+  .icon-btn--inverse {
+    color: var(--text-on-inverse);
+  }
+  .icon-btn--inverse:hover {
+    background: rgba(245, 242, 235, 0.12);
+  }
+
+  .icon-btn:disabled {
+    opacity: 0.42;
+    pointer-events: none;
+  }
+</style>

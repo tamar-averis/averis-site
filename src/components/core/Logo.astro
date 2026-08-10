@@ -1,0 +1,99 @@
+---
+interface Props {
+  variant?: 'primary' | 'reversed';
+  /** Adds the "Healthcare Claims Analysis" category line beneath. */
+  descriptor?: boolean;
+  /** Wordmark cap height in px; everything scales from it. Min 120px total width. */
+  height?: number;
+  /** Renders only the "A" monogram (favicon / avatar use). */
+  markOnly?: boolean;
+  class?: string;
+}
+
+const { variant = 'primary', descriptor = false, height = 34, markOnly = false, class: className } = Astro.props;
+
+const dark = variant === 'reversed';
+const stroke = dark ? '#F5F2EB' : '#16473F';
+const markSize = height * 1.35;
+const vars = [
+  `--logo-size:${height}px`,
+  `--logo-gap:${height * 0.47}px`,
+  `--logo-rule:${Math.max(3, height * 0.15)}px`,
+  `--logo-stack-gap:${height * 0.41}px`,
+].join(';');
+---
+
+<span class:list={['logo', dark && 'logo--reversed', descriptor && 'logo--stacked', className]} style={vars}>
+  <span class="logo__wordmark">
+    <svg width={markSize} height={markSize} viewBox="0 0 100 100" fill="none" class="logo__mark" aria-hidden="true">
+      <path d="M27 82 L50 22 L73 82" stroke={stroke} stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    {!markOnly && <span class="logo__text">AVERIS</span>}
+    {!markOnly && <span class="logo__rule" aria-hidden="true" />}
+  </span>
+  {descriptor && !markOnly && <span class="logo__descriptor">Healthcare Claims Analysis</span>}
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+  }
+
+  .logo--stacked {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--logo-stack-gap);
+  }
+
+  .logo__wordmark {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--logo-gap);
+  }
+
+  .logo__mark {
+    flex: 0 0 auto;
+  }
+
+  .logo__text {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wordmark);
+    line-height: 1;
+    font-size: var(--logo-size);
+    color: var(--text-heading);
+  }
+
+  .logo__rule {
+    position: absolute;
+    z-index: 1;
+    left: 6px;
+    right: -4px;
+    bottom: 22%;
+    height: var(--logo-rule);
+    border-radius: var(--radius-xs);
+    background: var(--accent-line-on-light);
+  }
+
+  .logo__descriptor {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: var(--text-nano);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-catline);
+    color: #6a7c74;
+  }
+
+  .logo--reversed .logo__text {
+    color: var(--text-on-inverse);
+  }
+  .logo--reversed .logo__rule {
+    background: var(--accent-line);
+  }
+  .logo--reversed .logo__descriptor {
+    color: var(--text-on-inverse-mute);
+  }
+</style>

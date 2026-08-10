@@ -1,0 +1,38 @@
+---
+interface Props {
+  tone?: 'light' | 'bone' | 'green' | 'deep';
+  class?: string;
+  style?: string;
+}
+
+const { tone = 'light', class: className, style } = Astro.props;
+---
+
+<section class:list={['section', `section--${tone}`, className]} style={style}>
+  <div class="wrap"><slot /></div>
+</section>
+
+<style>
+  .section {
+    padding: var(--section-pad-y) 0;
+  }
+
+  .section--light {
+    background: var(--surface-card);
+  }
+  .section--bone {
+    background: var(--surface-raised);
+  }
+  .section--green {
+    background: var(--surface-inverse);
+  }
+  .section--deep {
+    background: var(--surface-inverse-deep);
+  }
+
+  @media (max-width: 900px) {
+    .section {
+      padding: var(--section-pad-y-sm) 0;
+    }
+  }
+</style>

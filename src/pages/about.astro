@@ -1,0 +1,311 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/site/Section.astro';
+import Eyebrow from '../components/site/Eyebrow.astro';
+import CtaBand from '../components/site/CtaBand.astro';
+import Card from '../components/core/Card.astro';
+import Icon from '../components/core/Icon.astro';
+import Tag from '../components/core/Tag.astro';
+import AffirmationLine from '../components/core/AffirmationLine.astro';
+
+const FOCUS = [
+  'Zero-paid adjudications',
+  'Misclassified claims',
+  '\u201cMember not found\u201d errors',
+  'Claims stuck in pending review',
+  'Unadjudicated claims in limbo',
+  'Inconsistencies between 837 (submitted) and 835 (paid) data',
+  'Payer patterns that hide collectible revenue',
+];
+
+const DELIVER = [
+  ['AR Recovery Audits', 'file-search'],
+  ['Payer Forensics (835/837 deep dives)', 'database'],
+  ['Demand Letters & CRN Preparation', 'file-text'],
+  ['Litigation Support Packages', 'scale'],
+  ['Complete AR Recovery Roadmaps', 'line-chart'],
+];
+---
+
+<Base
+  title="Averis, About"
+  description="Averis exists because the money a provider is owed is recoverable, and because the record almost always supports the provider once someone reads all of it."
+  page="about"
+>
+  <Section tone="green" class="about-hero">
+    <div class="about-hero__grid">
+      <div>
+        <Eyebrow tone="dark">Why Averis</Eyebrow>
+        <h1 class="about-hero__heading">
+          Built by someone who has already <span class="affirm-underline">done the work.</span>
+        </h1>
+        <p class="about-hero__lead">
+          Averis exists because the money a provider is owed is recoverable, and because the record almost always
+          supports the provider once someone reads all of it.
+        </p>
+      </div>
+      <Card tone="green" padding={26} class="founder">
+        <div class="founder__monogram" aria-hidden="true">NB</div>
+        <div class="founder__name">Nadav Bernstein</div>
+        <div class="founder__role">Founder &amp; Investor</div>
+        <AffirmationLine tone="dark" width={52} class="founder__rule" />
+        <p class="founder__descriptor">
+          Working with clinics, attorneys, and medical practices on complex payer disputes.
+        </p>
+        <a
+          class="founder__link"
+          href="https://www.linkedin.com/in/nadav-bernstein-45912645/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn profile <Icon name="arrow-right" size={14} />
+        </a>
+      </Card>
+    </div>
+  </Section>
+
+  <Section tone="light">
+    <div class="background">
+      <div>
+        <Eyebrow>Background</Eyebrow>
+        <h2 class="section-heading">A track record before a launch.</h2>
+      </div>
+      <div>
+        <p class="background__body">
+          Before formally launching Pelican, I spent the past year supporting clinics, attorneys, and medical practices
+          involved in complex payer disputes. This included building AR analysis packages that contributed to a recent
+          successful court outcome against a major national healthcare payer, where our findings played a key role in
+          clarifying the provider&rsquo;s position.
+        </p>
+        <div class="background__tags">
+          <Tag tone="outline">Clinics</Tag>
+          <Tag tone="outline">Attorneys</Tag>
+          <Tag tone="outline">Medical practices</Tag>
+          <Tag>Complex payer disputes</Tag>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="bone">
+    <Eyebrow>Focus areas</Eyebrow>
+    <h2 class="section-heading focus__heading">Uncovering hidden collectible AR</h2>
+    <div class="focus">
+      {
+        FOCUS.map((t) => (
+          <div class="focus__row">
+            <Icon name="check" size={17} color="var(--accent-line-on-light)" class="focus__icon" />
+            <span class="focus__label">{t}</span>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section tone="light">
+    <Eyebrow>What we deliver</Eyebrow>
+    <div class="deliver">
+      {
+        DELIVER.map(([t, ic], i) => (
+          <Card padding={22} tone={i === 4 ? 'bone' : 'light'} accent={i === 4}>
+            <Icon name={ic} size={20} color="var(--text-heading)" />
+            <h3 class="deliver__title">{t}</h3>
+          </Card>
+        ))
+      }
+    </div>
+  </Section>
+
+  <CtaBand headingMax={620}>
+    If you want to understand how much money your clinic is owed and how quickly you can recover it, feel free to reach
+    out.
+  </CtaBand>
+</Base>
+
+<style>
+  /* On <Section>, so outside this page's scope. */
+  :global(.about-hero) {
+    padding: 72px 0 64px;
+  }
+
+  .about-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  .about-hero__heading {
+    font-size: var(--text-display-2);
+    font-weight: 800;
+    color: var(--text-on-inverse);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.06;
+    max-width: 640px;
+  }
+
+  .about-hero__lead {
+    margin-top: 34px;
+    font-size: var(--text-lead);
+    color: var(--text-on-inverse-sub);
+    max-width: var(--measure);
+  }
+
+  .about-hero__grid :global(.founder) {
+    background: rgba(245, 242, 235, 0.06);
+    border: 1px solid var(--border-on-inverse);
+    box-shadow: none;
+  }
+
+  .founder__monogram {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    background: rgba(245, 242, 235, 0.1);
+    border: 1px solid var(--border-on-inverse);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text-accent-on-dark);
+  }
+
+  .founder__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text-on-inverse);
+    margin-top: 18px;
+  }
+
+  .founder__role {
+    font-size: var(--text-body-sm);
+    color: var(--text-accent-on-dark);
+    margin-top: 5px;
+    letter-spacing: 0.02em;
+  }
+
+  .about-hero__grid :global(.founder__rule) {
+    margin: 18px 0;
+  }
+
+  .founder__descriptor {
+    font-size: var(--text-body-sm);
+    color: var(--text-on-inverse-sub);
+  }
+
+  .founder__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    font-size: var(--text-body-sm);
+    color: var(--text-accent-on-dark);
+  }
+
+  .founder__link:hover {
+    color: var(--averis-bone);
+  }
+
+  /* Background */
+  .background {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .section-heading {
+    font-size: var(--text-h2);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .background__body {
+    font-size: var(--text-body-lg);
+    color: var(--text-body);
+    max-width: var(--measure);
+  }
+
+  .background__tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+
+  /* Focus areas */
+  .focus__heading {
+    max-width: 560px;
+  }
+
+  .focus {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 40px;
+    margin-top: 26px;
+    max-width: 900px;
+  }
+
+  .focus__row {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    padding: 15px 0;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .focus__row :global(.focus__icon) {
+    margin-top: 2px;
+  }
+
+  .focus__label {
+    font-size: var(--text-body-md);
+    color: var(--text-strong);
+  }
+
+  /* Deliverables */
+  .deliver {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  .deliver__title {
+    font-size: var(--text-h4);
+    font-weight: 600;
+    margin-top: 16px;
+    line-height: 1.35;
+  }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .about-hero__heading {
+      font-size: 40px;
+    }
+
+    .about-hero__grid,
+    .background {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+
+    .deliver {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .about-hero__heading {
+      font-size: 34px;
+    }
+
+    .focus,
+    .deliver {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

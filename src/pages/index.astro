@@ -1,0 +1,414 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/site/Section.astro';
+import Eyebrow from '../components/site/Eyebrow.astro';
+import CtaBand from '../components/site/CtaBand.astro';
+import Button from '../components/core/Button.astro';
+import Card from '../components/core/Card.astro';
+import Badge from '../components/core/Badge.astro';
+import Tag from '../components/core/Tag.astro';
+import Icon from '../components/core/Icon.astro';
+import AffirmationLine from '../components/core/AffirmationLine.astro';
+
+const GLANCE = [
+  ['Claim lines in the extract', '1,412,908'],
+  ['Lines cited by payer', '6,140'],
+  ['Supported on the record', '5,918'],
+  ['Demand withdrawn', '$18.6M'],
+];
+
+const PROBLEM_CARDS = [
+  [
+    'database',
+    'Data at full scale',
+    'We work from the complete extract, not the payer\u2019s sample: every line, every modifier, every remittance.',
+  ],
+  [
+    'file-search',
+    'Line-level evidence',
+    'Each disputed line is traced back to the documentation that supports it, and cited.',
+  ],
+  [
+    'scale',
+    'Built for counsel',
+    'Findings arrive in the form your attorneys file: reproducible, sourced, and defensible under challenge.',
+  ],
+];
+
+const STATS = [
+  ['1M+', 'Claim lines reviewed'],
+  ['60 days', 'To file rebuttal'],
+  ['$100M+', 'Largest exposure defended'],
+];
+
+const AUDIENCE = ['Health systems', 'Physician groups', 'Behavioral health', 'Defense counsel', 'Compliance teams'];
+---
+
+<Base
+  title="Averis, We prove you were right."
+  description="Averis analyzes healthcare claims data at scale to build the evidence that defends providers against payer overpayment allegations."
+  page="home"
+>
+  <div class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="wrap hero__inner">
+      <div>
+        <Eyebrow tone="dark">Healthcare Claims Analysis</Eyebrow>
+        <h1 class="hero__heading">
+          When a payer alleges overpayment,<br />
+          <span class="affirm-underline">we prove you were right.</span>
+        </h1>
+        <p class="hero__lead">
+          Averis analyzes claims data at scale to build the evidence that stands up in audit and appeal, working
+          alongside your attorneys, on your side of the record.
+        </p>
+        <div class="hero__actions">
+          <Button variant="inverse" size="lg" href="/contact">Request an analysis</Button>
+          <Button variant="ghost" size="lg" href="/how-it-works" class="hero__ghost">
+            How it works
+            <Icon slot="icon-right" name="arrow-right" size={15} />
+          </Button>
+        </div>
+      </div>
+      <Card tone="green" padding={0} class="glance">
+        <div class="glance__head">
+          <span class="glance__title">One matter, at a glance</span>
+          <Badge tone="inverse">Sample</Badge>
+        </div>
+        <div class="glance__body">
+          {
+            GLANCE.map(([k, v], i) => (
+              <div class:list={['glance__row', i > 0 && 'glance__row--divided']}>
+                <span class="glance__key">{k}</span>
+                <span class:list={['glance__value', i === 3 && 'glance__value--accent']}>{v}</span>
+              </div>
+            ))
+          }
+        </div>
+      </Card>
+    </div>
+  </div>
+
+  <Section tone="light">
+    <div class="problem">
+      <div>
+        <Eyebrow>The problem</Eyebrow>
+        <h2 class="section-heading">An allegation is an extrapolation, not a finding.</h2>
+      </div>
+      <p class="problem__body">
+        Payers sample a few dozen claims, find error, and project it across years of billing. The projection is only as
+        sound as the sample. We rebuild the record line by line, the coding, the documentation, the medical necessity,
+        and show where the sample does not carry the conclusion.
+      </p>
+    </div>
+    <div class="problem__cards">
+      {
+        PROBLEM_CARDS.map(([ic, t, d]) => (
+          <Card tone="bone" padding={24}>
+            <Icon name={ic} size={22} color="var(--accent-line-on-light)" />
+            <h3 class="card-heading">{t}</h3>
+            <p class="card-body">{d}</p>
+          </Card>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section tone="green">
+    <div class="stats">
+      {
+        STATS.map(([n, l]) => (
+          <div>
+            <div class="stats__number">{n}</div>
+            <AffirmationLine tone="dark" width={52} class="stats__rule" />
+            <div class="stats__label">{l}</div>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section tone="bone">
+    <div class="audience">
+      <div>
+        <Eyebrow>Who we work with</Eyebrow>
+        <h2 class="section-heading">Providers, their counsel, and no one else.</h2>
+        <p class="audience__body">
+          We do not take payer engagements. Health systems, physician groups, and the law firms defending them are the
+          whole of our practice.
+        </p>
+        <div class="audience__tags">
+          {AUDIENCE.map((t) => <Tag>{t}</Tag>)}
+        </div>
+      </div>
+      <Card padding={30}>
+        <p class="quote">
+          &ldquo;The extrapolation collapsed once the full population was on the table. Averis put the record in front of
+          us in a form we could file.&rdquo;
+        </p>
+        <AffirmationLine width={72} class="quote__rule" />
+        <div class="quote__attribution">
+          Partner, healthcare regulatory practice<br />Sample attribution, replace with an approved client quote.
+        </div>
+      </Card>
+    </div>
+  </Section>
+
+  <CtaBand>Send us the allegation letter. We will tell you what the data says.</CtaBand>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-inverse);
+    color: var(--text-on-inverse);
+  }
+
+  /* The only decorative gradient in the system. */
+  .hero__glow {
+    position: absolute;
+    right: -160px;
+    bottom: -200px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--tint-champagne-16), transparent 66%);
+  }
+
+  .hero__inner {
+    position: relative;
+    padding: 104px 40px 92px;
+    display: grid;
+    /* minmax(0,…) matters: a plain 1.15fr .85fr lets the headline's min-content
+       width blow out the track. */
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 56px;
+    align-items: center;
+  }
+
+  .hero__heading {
+    font-size: var(--text-display-2);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-on-inverse);
+    max-width: 640px;
+  }
+
+  .hero__lead {
+    margin-top: 34px;
+    font-size: var(--text-lead);
+    color: var(--text-on-inverse-sub);
+    max-width: var(--measure-narrow);
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+
+  .hero__inner :global(.hero__ghost) {
+    color: var(--text-on-inverse);
+    border: 1px solid var(--border-on-inverse);
+  }
+
+  .hero__inner :global(.hero__ghost:hover) {
+    background: rgba(245, 242, 235, 0.06);
+    color: var(--text-on-inverse);
+  }
+
+  /* Glance card */
+  .hero__inner :global(.glance) {
+    background: rgba(245, 242, 235, 0.06);
+    border: 1px solid var(--border-on-inverse);
+    box-shadow: none;
+  }
+
+  .glance__head {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border-on-inverse);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .glance__title {
+    font-size: var(--text-caption);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-on-inverse-mute);
+    font-weight: 600;
+  }
+
+  .glance__body {
+    padding: 22px;
+  }
+
+  .glance__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 0;
+  }
+
+  .glance__row--divided {
+    border-top: 1px solid var(--border-on-inverse);
+  }
+
+  .glance__key {
+    font-size: var(--text-body-sm);
+    color: var(--text-on-inverse-mute);
+  }
+
+  .glance__value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--text-on-inverse);
+  }
+
+  .glance__value--accent {
+    color: var(--text-accent-on-dark);
+  }
+
+  /* Problem */
+  .problem {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 56px;
+  }
+
+  .section-heading {
+    font-size: var(--text-h2);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .problem__body {
+    font-size: var(--text-body-lg);
+    color: var(--text-body);
+    max-width: var(--measure);
+  }
+
+  .problem__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 44px;
+  }
+
+  .card-heading {
+    font-size: var(--text-h3);
+    font-weight: 600;
+    margin-top: 16px;
+  }
+
+  .card-body {
+    margin-top: 9px;
+    font-size: var(--text-body-md);
+    color: var(--text-body);
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 34px;
+  }
+
+  .stats__number {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 42px;
+    color: var(--text-on-inverse);
+    line-height: 1;
+  }
+
+  .stats :global(.stats__rule) {
+    margin: 14px 0;
+  }
+
+  .stats__label {
+    font-size: var(--text-body-sm);
+    color: var(--text-on-inverse-sub);
+    max-width: 190px;
+  }
+
+  /* Audience */
+  .audience {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .audience__body {
+    margin-top: 16px;
+    font-size: var(--text-body-lg);
+    color: var(--text-body);
+  }
+
+  .audience__tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+
+  .quote {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--text-heading);
+    line-height: 1.4;
+  }
+
+  .audience :global(.quote__rule) {
+    margin: 22px 0 14px;
+  }
+
+  .quote__attribution {
+    font-size: var(--text-body-sm);
+    color: var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 64px var(--section-pad-x-sm) 56px;
+    }
+
+    .hero__heading {
+      font-size: 40px;
+    }
+
+    .problem,
+    .audience {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+
+    .problem__cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .hero__heading {
+      font-size: 34px;
+    }
+
+    .problem__cards,
+    .stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

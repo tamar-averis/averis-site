@@ -1,0 +1,152 @@
+---
+/* Underlined tab bar. The active tab is marked with the champagne rule and
+   nothing else: no background fill. Panels are passed as named slots keyed by
+   the tab value. */
+interface Props {
+  id: string;
+  tabs: Array<{ value: string; label: string; count?: number }>;
+  value?: string;
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+
+const { id, tabs, value, tone = 'light', class: className } = Astro.props;
+const active = value ?? tabs[0]?.value;
+
+/* Slot names must be static in Astro's template syntax, so the panels are
+   resolved up front and injected by key. */
+const panels = new Map(
+  await Promise.all(tabs.map(async (t) => [t.value, await Astro.slots.render(t.value)] as const)),
+);
+---
+
+<div class:list={['tabs', `tabs--${tone}`, className]} data-tabs={id}>
+  <div class="tabs__bar" role="tablist">
+    {
+      tabs.map((t) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${id}-tab-${t.value}`}
+          class:list={['tabs__tab', t.value === active && 'is-active']}
+          data-tab={t.value}
+          aria-selected={t.value === active ? 'true' : 'false'}
+          aria-controls={`${id}-panel-${t.value}`}
+          tabindex={t.value === active ? 0 : -1}
+        >
+          {t.label}
+          {t.count !== undefined && <span class="tabs__count">{t.count}</span>}
+          <span class="tabs__rule" aria-hidden="true" />
+        </button>
+      ))
+    }
+  </div>
+  {
+    tabs.map((t) => (
+      <div
+        role="tabpanel"
+        id={`${id}-panel-${t.value}`}
+        aria-labelledby={`${id}-tab-${t.value}`}
+        data-panel={t.value}
+        hidden={t.value !== active}
+      >
+        <Fragment set:html={panels.get(t.value)} />
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
+
+    const select = (value: string) => {
+      tabs.forEach((tab) => {
+        const on = tab.dataset.tab === value;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== value;
+      });
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab.dataset.tab!));
+      tab.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        const next = tabs[(i + step + tabs.length) % tabs.length];
+        select(next.dataset.tab!);
+        next.focus();
+      });
+    });
+  });
+</script>
+
+<style>
+  .tabs__bar {
+    display: flex;
+    gap: 26px;
+    border-bottom: 1px solid var(--border-hairline);
+    font-family: var(--font-ui);
+  }
+
+  .tabs--dark .tabs__bar {
+    border-bottom-color: var(--border-on-inverse);
+  }
+
+  .tabs__tab {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    padding: 0 0 12px;
+    position: relative;
+    font-family: inherit;
+    font-size: var(--text-body-md);
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+
+  .tabs--dark .tabs__tab {
+    color: var(--text-on-inverse-mute);
+  }
+
+  .tabs__tab.is-active {
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+
+  .tabs--dark .tabs__tab.is-active {
+    color: var(--text-on-inverse);
+  }
+
+  .tabs__count {
+    margin-left: 7px;
+    font-size: var(--text-caption);
+    color: var(--text-faint);
+  }
+
+  .tabs__rule {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    border-radius: var(--radius-xs);
+    background: var(--accent-line-on-light);
+    opacity: 0;
+  }
+
+  .tabs--dark .tabs__rule {
+    background: var(--accent-line);
+  }
+
+  .tabs__tab.is-active .tabs__rule {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import Legal from '../../layouts/Legal.astro';
+
+const toc = [
+  { id: 'scope', label: 'Scope' },
+  { id: 'information-we-collect', label: 'Information we collect' },
+  { id: 'how-we-use-it', label: 'How we use it' },
+  { id: 'disclosure', label: 'Disclosure' },
+  { id: 'retention', label: 'Retention' },
+  { id: 'security', label: 'Security' },
+  { id: 'your-choices', label: 'Your choices' },
+  { id: 'changes-and-contact', label: 'Changes and contact' },
+];
+---
+
+<Legal
+  title="Privacy policy"
+  description="How Averis collects, uses, and protects information when you visit www.averisanalytics.com or engage us for claims analysis."
+  updated="9 August 2026"
+  toc={toc}
+>
+  <section id="scope">
+    <h2>Scope</h2>
+    <p>
+      This policy covers www.averisanalytics.com and the business information we handle in the course of an engagement. Protected
+      health information received under a Business Associate Agreement is governed separately by that agreement and by
+      our <a href="/legal/hipaa-security">HIPAA and security</a> commitments, not by this policy.
+    </p>
+  </section>
+
+  <section id="information-we-collect">
+    <h2>Information we collect</h2>
+    <ul>
+      <li>
+        <strong>Information you give us.</strong> Name, work email, organization, role, and anything you write in a
+        contact form or send by email.
+      </li>
+      <li>
+        <strong>Engagement data.</strong> Claims extracts, remittance data, documentation, and correspondence provided by
+        a client or its counsel under a written agreement.
+      </li>
+      <li>
+        <strong>Site data.</strong> Standard server logs and basic analytics: IP address, browser, pages viewed, and
+        referring page.
+      </li>
+    </ul>
+    <p>
+      We do not ask for protected health information through the website, and we ask that you not send it there. We
+      provide a secure channel at intake.
+    </p>
+  </section>
+
+  <section id="how-we-use-it">
+    <h2>How we use it</h2>
+    <ul>
+      <li>To respond to your inquiry and scope an engagement.</li>
+      <li>To perform the analysis a client has retained us to perform.</li>
+      <li>To operate, secure, and improve the website.</li>
+      <li>To meet legal, regulatory, and contractual obligations.</li>
+    </ul>
+    <p>
+      We do not sell information. We do not use client engagement data to train general-purpose models or for any purpose
+      outside that engagement.
+    </p>
+  </section>
+
+  <section id="disclosure">
+    <h2>Disclosure</h2>
+    <p>
+      We share information only with the client and the counsel it designates, with vetted subprocessors bound by written
+      confidentiality and security terms, and where compelled by law. <strong>We do not take payer engagements</strong>,
+      and we do not share client information with payers.
+    </p>
+  </section>
+
+  <section id="retention">
+    <h2>Retention</h2>
+    <p>
+      Engagement data is retained for the period set out in the engagement letter, then deleted or returned at the
+      client&rsquo;s direction. Website inquiry records are retained for 24 months. Server logs are retained for 90 days.
+    </p>
+  </section>
+
+  <section id="security">
+    <h2>Security</h2>
+    <p>
+      Encryption in transit and at rest, least-privilege access, logged access to engagement data, and annual review of
+      controls. Detail is in <a href="/legal/hipaa-security">HIPAA and security</a>.
+    </p>
+  </section>
+
+  <section id="your-choices">
+    <h2>Your choices</h2>
+    <p>
+      Write to <a href="mailto:info@averisanalytics.com">info@averisanalytics.com</a> to ask what we hold about you, correct it, or ask
+      us to delete it. Where state or federal law grants you additional rights, we honour them. Individuals whose PHI we
+      process should direct requests to the provider that holds the record; we act on that provider&rsquo;s instruction.
+    </p>
+  </section>
+
+  <section id="changes-and-contact">
+    <h2>Changes and contact</h2>
+    <p>
+      Material changes will be posted here with a revised date. Questions:
+      <a href="mailto:info@averisanalytics.com">info@averisanalytics.com</a>.
+    </p>
+  </section>
+</Legal>

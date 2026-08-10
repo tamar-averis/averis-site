@@ -1,0 +1,57 @@
+---
+/* A headline carrying the affirmation underline. The rule is a background
+   gradient rather than an absolutely positioned bar so it survives text
+   wrapping without needing white-space: nowrap. One per screen. */
+interface Props {
+  tone?: 'light' | 'dark';
+  level?: 'h1' | 'h2' | 'h3';
+  thickness?: number;
+  class?: string;
+  style?: string;
+}
+
+const { tone = 'light', level = 'h2', thickness = 4, class: className, style } = Astro.props;
+const Tag = level;
+---
+
+<Tag
+  class:list={['affirm-heading', `affirm-heading--${level}`, tone === 'dark' && 'affirm-heading--dark', className]}
+  style={`--affirm-thickness:${thickness}px;${style ?? ''}`}
+>
+  <span class="affirm-heading__text"><slot /></span>
+</Tag>
+
+<style>
+  .affirm-heading {
+    font-family: var(--font-display);
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--leading-snug);
+    color: var(--text-heading);
+  }
+
+  .affirm-heading--h1 {
+    font-size: var(--text-display-2);
+  }
+  .affirm-heading--h2,
+  .affirm-heading--h3 {
+    font-size: var(--text-h2);
+  }
+
+  .affirm-heading--dark {
+    color: var(--text-on-inverse);
+  }
+
+  .affirm-heading__text {
+    background: linear-gradient(var(--accent-line-on-light), var(--accent-line-on-light)) 0 100% / 100%
+      var(--affirm-thickness) no-repeat;
+    padding-bottom: 8px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .affirm-heading--dark .affirm-heading__text {
+    background-image: linear-gradient(var(--accent-line), var(--accent-line));
+  }
+</style>

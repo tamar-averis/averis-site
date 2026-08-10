@@ -1,0 +1,107 @@
+---
+import Legal from '../../layouts/Legal.astro';
+
+const toc = [
+  { id: 'acceptance', label: 'Acceptance' },
+  { id: 'no-legal-or-clinical-advice', label: 'No legal or clinical advice' },
+  { id: 'no-engagement-by-inquiry', label: 'No engagement by inquiry' },
+  { id: 'illustrative-content', label: 'Illustrative content' },
+  { id: 'intellectual-property', label: 'Intellectual property' },
+  { id: 'acceptable-use', label: 'Acceptable use' },
+  { id: 'third-party-links', label: 'Third-party links' },
+  { id: 'disclaimers-and-liability', label: 'Disclaimers and liability' },
+  { id: 'governing-law', label: 'Governing law' },
+  { id: 'changes-and-contact', label: 'Changes and contact' },
+];
+---
+
+<Legal
+  title="Terms of use"
+  description="The terms that govern your use of www.averisanalytics.com. Engagements are governed by a separate written agreement."
+  updated="9 August 2026"
+  toc={toc}
+>
+  <section id="acceptance">
+    <h2>Acceptance</h2>
+    <p>By using www.averisanalytics.com you accept these terms. If you do not accept them, do not use the site.</p>
+  </section>
+
+  <section id="no-legal-or-clinical-advice">
+    <h2>No legal or clinical advice</h2>
+    <p>
+      Everything on this site is general information about our analytical practice. It is not legal advice, coding
+      advice, or clinical judgment, and it does not create an attorney-client, consultant, or engagement relationship.
+      Averis is not a law firm. We work alongside your attorneys; we do not replace them.
+    </p>
+  </section>
+
+  <section id="no-engagement-by-inquiry">
+    <h2>No engagement by inquiry</h2>
+    <p>
+      Submitting a form, emailing us, or discussing a matter does not retain Averis. An engagement begins only when both
+      parties sign an engagement letter. Do not send confidential or privileged material before that point, and do not
+      send protected health information through the website.
+    </p>
+  </section>
+
+  <section id="illustrative-content">
+    <h2>Illustrative content</h2>
+    <p>
+      Figures, matter summaries, timelines, and sample findings shown on this site are anonymized or illustrative. They
+      describe past work under specific facts. <strong>They are not a prediction or guarantee of any outcome.</strong>
+      Every matter turns on its own record.
+    </p>
+  </section>
+
+  <section id="intellectual-property">
+    <h2>Intellectual property</h2>
+    <p>
+      The Averis name, mark, wordmark, site content, methodology descriptions, and report formats are our property. You
+      may quote short excerpts with attribution. You may not copy, reproduce, or reuse the site or our methodology
+      materials commercially without written permission.
+    </p>
+  </section>
+
+  <section id="acceptable-use">
+    <h2>Acceptable use</h2>
+    <ul>
+      <li>Do not attempt to gain unauthorized access to the site or any related system.</li>
+      <li>Do not scrape, mirror, or bulk-download the site.</li>
+      <li>Do not misrepresent your identity or your authority to act for a provider.</li>
+    </ul>
+  </section>
+
+  <section id="third-party-links">
+    <h2>Third-party links</h2>
+    <p>
+      Links to other sites are provided for convenience. We do not control them and are not responsible for their content
+      or practices.
+    </p>
+  </section>
+
+  <section id="disclaimers-and-liability">
+    <h2>Disclaimers and liability</h2>
+    <p>
+      The site is provided as is, without warranties of any kind to the fullest extent the law permits. To the extent
+      permitted by law, Averis is not liable for indirect, incidental, or consequential damages arising from your use of
+      the site. Nothing here limits liability that cannot be limited by law. Obligations in a signed engagement letter
+      control over this section for that engagement.
+    </p>
+  </section>
+
+  <section id="governing-law">
+    <h2>Governing law</h2>
+    <p>
+      These terms are governed by the laws of the State of Maryland, without regard to conflict-of-law rules. Venue lies
+      in the state and federal courts sitting in Montgomery County, Maryland.
+    </p>
+  </section>
+
+  <section id="changes-and-contact">
+    <h2>Changes and contact</h2>
+    <p>
+      We may revise these terms; the revised date above governs. Questions:
+      <a href="mailto:info@averisanalytics.com">info@averisanalytics.com</a>.
+    </p>
+  </section>
+</Legal>

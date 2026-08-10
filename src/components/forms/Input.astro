@@ -1,0 +1,60 @@
+---
+interface Props {
+  label?: string;
+  /** Right-aligned note beside the label, e.g. "Optional". */
+  hint?: string;
+  placeholder?: string;
+  name?: string;
+  id?: string;
+  value?: string;
+  type?: string;
+  required?: boolean;
+  disabled?: boolean;
+  /** Error message shown beneath; also recolours the border. */
+  error?: string;
+  /** Static text inside the field's left edge. */
+  prefix?: string;
+  class?: string;
+}
+
+const {
+  label,
+  hint,
+  placeholder,
+  name,
+  id = name,
+  value,
+  type = 'text',
+  required = false,
+  disabled = false,
+  error,
+  prefix,
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={['field', error && 'field--error', disabled && 'field--disabled', className]}>
+  {
+    label && (
+      <label class="field__label" for={id}>
+        {label}
+        {hint && <span class="field__hint">{hint}</span>}
+      </label>
+    )
+  }
+  <span class:list={['field__control', prefix && 'field__control--with-prefix']}>
+    {prefix && <span class="field__prefix">{prefix}</span>}
+    <input
+      class="field__input"
+      type={type}
+      id={id}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      required={required}
+      disabled={disabled}
+      aria-describedby={error ? `${id}-error` : undefined}
+    />
+  </span>
+  {error && <span class="field__error" id={`${id}-error`}>{error}</span>}
+</div>

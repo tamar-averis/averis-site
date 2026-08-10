@@ -1,0 +1,24 @@
+:root{
+  --space-1:4px;
+  --space-2:6px;
+  --space-3:8px;
+  --space-4:12px;
+  --space-5:14px;
+  --space-6:18px;
+  --space-7:22px;
+  --space-8:26px;
+  --space-9:34px;
+  --space-10:44px;
+  --space-11:56px;
+  --space-12:64px;
+  --space-13:96px;
+
+  --section-pad-y:56px;
+  --section-pad-x:64px;
+  --section-pad-y-sm:40px;
+  --section-pad-x-sm:26px;
+  --measure:640px;         /* max body copy width */
+  --measure-narrow:520px;
+  --page-max:940px;        /* brand document / marketing column */
+  --site-max:1180px;
+}

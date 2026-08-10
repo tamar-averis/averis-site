@@ -1,0 +1,117 @@
+---
+import Logo from '../core/Logo.astro';
+import Button from '../core/Button.astro';
+
+interface Props {
+  page?: string;
+}
+
+const { page } = Astro.props;
+
+const NAV = [
+  { id: 'home', label: 'Overview', href: '/' },
+  { id: 'method', label: 'How it works', href: '/how-it-works' },
+  { id: 'about', label: 'About', href: '/about' },
+  { id: 'contact', label: 'Contact', href: '/contact' },
+];
+---
+
+<header class="site-header">
+  <div class="wrap site-header__bar">
+    <a href="/" class="site-header__logo" aria-label="Averis, home"><Logo height={21} /></a>
+    <nav class="site-header__nav" aria-label="Primary">
+      {
+        NAV.map((n) => (
+          <a
+            href={n.href}
+            class:list={['site-header__link', page === n.id && 'is-active']}
+            aria-current={page === n.id ? 'page' : undefined}
+          >
+            {n.label}
+            <span class="site-header__rule" aria-hidden="true" />
+          </a>
+        ))
+      }
+      <Button size="sm" href="/contact">Request an analysis</Button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 74px;
+  }
+
+  .site-header__logo {
+    display: flex;
+  }
+
+  .site-header__nav {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+
+  .site-header__link {
+    position: relative;
+    padding-bottom: 3px;
+    font-size: var(--text-body-md);
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .site-header__link:hover {
+    color: var(--text-heading);
+  }
+
+  .site-header__link.is-active {
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+
+  .site-header__rule {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-line-on-light);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-standard);
+  }
+
+  .site-header__link:hover .site-header__rule,
+  .site-header__link.is-active .site-header__rule {
+    opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .site-header__bar {
+      height: auto;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .site-header__nav {
+      flex-wrap: wrap;
+      gap: 18px;
+      width: 100%;
+    }
+  }
+</style>

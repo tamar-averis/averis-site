@@ -1,0 +1,97 @@
+---
+import Logo from '../core/Logo.astro';
+
+const LEGAL = [
+  { label: 'Privacy', href: '/legal/privacy' },
+  { label: 'Terms', href: '/legal/terms' },
+  { label: 'HIPAA & security', href: '/legal/hipaa-security' },
+];
+---
+
+<footer class="site-footer">
+  <div class="wrap site-footer__grid">
+    <div>
+      <Logo variant="reversed" descriptor height={20} />
+      <p class="site-footer__boilerplate">
+        Averis provides healthcare claims analysis that defends providers against commercial and federal payer
+        allegations.
+      </p>
+    </div>
+    <div>
+      <div class="site-footer__eyebrow">Legal</div>
+      <div class="site-footer__links">
+        {LEGAL.map((l) => <a href={l.href}>{l.label}</a>)}
+      </div>
+    </div>
+  </div>
+  <div class="wrap site-footer__meta">
+    <span>&copy; 2026 Averis. www.averisanalytics.com</span><span>We prove you were right.</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--surface-inverse-deep);
+    color: var(--text-on-inverse-sub);
+    padding: 56px 0 34px;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+  }
+
+  .site-footer__boilerplate {
+    margin-top: 18px;
+    font-size: var(--text-body-sm);
+    color: var(--text-on-inverse-mute);
+    max-width: 260px;
+  }
+
+  .site-footer__eyebrow {
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-accent-on-dark);
+    margin-bottom: 14px;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .site-footer__links a {
+    font-size: var(--text-body-sm);
+    color: var(--text-on-inverse-sub);
+  }
+
+  .site-footer__links a:hover {
+    color: var(--text-on-inverse);
+  }
+
+  .site-footer__meta {
+    margin-top: 44px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-on-inverse);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    font-size: var(--text-caption);
+    color: var(--text-on-inverse-mute);
+  }
+
+  @media (max-width: 700px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .site-footer__meta {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+import Radio from './Radio.astro';
+
+interface Props {
+  label?: string;
+  name: string;
+  options?: Array<{ value: string; label: string; description?: string }>;
+  value?: string;
+  class?: string;
+}
+
+const { label, name, options = [], value, class: className } = Astro.props;
+---
+
+<fieldset class:list={['radio-group', className]}>
+  {label && <legend class="radio-group__label">{label}</legend>}
+  <div class="radio-group__options">
+    {
+      options.map((o) => (
+        <Radio
+          name={name}
+          value={o.value}
+          label={o.label}
+          description={o.description}
+          checked={value === o.value}
+        />
+      ))
+    }
+  </div>
+</fieldset>
+
+<style>
+  .radio-group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-ui);
+  }
+</style>

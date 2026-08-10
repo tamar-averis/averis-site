@@ -1,0 +1,116 @@
+---
+import Legal from '../../layouts/Legal.astro';
+
+const toc = [
+  { id: 'our-role', label: 'Our role' },
+  { id: 'minimum-necessary', label: 'Minimum necessary' },
+  { id: 'how-data-reaches-us', label: 'How data reaches us' },
+  { id: 'safeguards', label: 'Safeguards' },
+  { id: 'subprocessors', label: 'Subprocessors' },
+  { id: 'retention-and-return', label: 'Retention and return' },
+  { id: 'breach-notification', label: 'Breach notification' },
+  { id: 'documentation-for-your-file', label: 'Documentation for your file' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<Legal
+  title="HIPAA and security"
+  description="Averis works with protected health information at scale. These are the commitments that make that safe for you and defensible for your counsel."
+  updated="9 August 2026"
+  toc={toc}
+>
+  <section id="our-role">
+    <h2>Our role</h2>
+    <p>
+      When we analyze claims data for a provider, Averis acts as a <strong>business associate</strong> under HIPAA. We
+      execute a Business Associate Agreement before any protected health information moves, and that agreement controls
+      where it differs from this page. Where we work at the direction of outside counsel, we can be engaged so the work
+      is positioned for privilege; your counsel decides that structure.
+    </p>
+  </section>
+
+  <section id="minimum-necessary">
+    <h2>Minimum necessary</h2>
+    <p>
+      We request only the data needed to test the allegation: the audit period, the cited population, and the
+      documentation that supports it. We do not request records outside the scope, and we say so in writing when a
+      request would exceed it.
+    </p>
+  </section>
+
+  <section id="how-data-reaches-us">
+    <h2>How data reaches us</h2>
+    <ul>
+      <li>
+        Encrypted transfer over SFTP or a client-controlled secure share. Never email attachments, never the website.
+      </li>
+      <li>Access credentials are issued per person, per engagement, and revoked at close.</li>
+      <li>
+        Every transfer is logged, and every file is hashed on receipt so the manifest in your findings packet is
+        verifiable.
+      </li>
+    </ul>
+  </section>
+
+  <section id="safeguards">
+    <h2>Safeguards</h2>
+    <ul>
+      <li>
+        <strong>Technical.</strong> Encryption in transit (TLS 1.2+) and at rest (AES-256), role-based least-privilege
+        access, multi-factor authentication, logged and reviewed access to engagement data, network segregation between
+        engagements.
+      </li>
+      <li>
+        <strong>Administrative.</strong> Workforce HIPAA training at hire and annually, background checks, written
+        incident response plan, annual risk analysis, documented subprocessor review.
+      </li>
+      <li>
+        <strong>Physical.</strong> Processing in access-controlled facilities operated by our infrastructure providers,
+        with no PHI on local or removable media.
+      </li>
+    </ul>
+  </section>
+
+  <section id="subprocessors">
+    <h2>Subprocessors</h2>
+    <p>
+      Any vendor with potential access to protected health information is under a written business associate or
+      equivalent agreement and is reviewed before use. A current subprocessor list is available on request.
+    </p>
+  </section>
+
+  <section id="retention-and-return">
+    <h2>Retention and return</h2>
+    <p>
+      Engagement data lives only as long as the engagement and the retention period your agreement sets. At close, we
+      return or destroy it at your direction and provide written certification of destruction.
+    </p>
+  </section>
+
+  <section id="breach-notification">
+    <h2>Breach notification</h2>
+    <p>
+      If we discover a breach of unsecured protected health information, we notify the covered entity without
+      unreasonable delay and within the period the Business Associate Agreement requires, with the facts we have and the
+      facts we are still establishing. We do not wait for a complete picture to tell you something happened.
+    </p>
+  </section>
+
+  <section id="documentation-for-your-file">
+    <h2>Documentation for your file</h2>
+    <p>
+      On request we provide the executed BAA, our security overview, the subprocessor list, evidence of workforce
+      training, and the source manifest for your matter. Compliance and internal audit teams should have what they need
+      without a follow-up.
+    </p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>
+      Security and privacy inquiries, and requests for a Business Associate Agreement before you send anything, go to
+      <a href="mailto:info@averisanalytics.com">info@averisanalytics.com</a>.
+    </p>
+  </section>
+</Legal>

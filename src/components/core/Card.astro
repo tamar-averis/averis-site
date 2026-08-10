@@ -1,0 +1,73 @@
+---
+interface Props {
+  tone?: 'light' | 'bone' | 'sand' | 'green';
+  /** Adds a short champagne rule at the top-left edge. */
+  accent?: boolean;
+  padding?: number;
+  /** Lifts the shadow on hover. */
+  interactive?: boolean;
+  class?: string;
+  style?: string;
+}
+
+const { tone = 'light', accent = false, padding = 26, interactive = false, class: className, style } = Astro.props;
+---
+
+<div
+  class:list={['card', `card--${tone}`, interactive && 'card--interactive', className]}
+  style={`--card-padding:${padding}px;${style ?? ''}`}
+>
+  {accent && <span class="card__accent" aria-hidden="true" />}
+  <slot />
+</div>
+
+<style>
+  .card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    padding: var(--card-padding);
+    font-family: var(--font-ui);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--duration-base) var(--ease-standard);
+  }
+
+  .card--light {
+    background: var(--surface-card);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-body);
+  }
+  .card--bone {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-body);
+  }
+  .card--sand {
+    background: var(--surface-neutral);
+    border: 1px solid transparent;
+    color: var(--text-body);
+  }
+  .card--green {
+    background: var(--surface-inverse);
+    border: 1px solid transparent;
+    color: var(--text-on-inverse-sub);
+  }
+
+  .card--interactive:hover {
+    box-shadow: var(--shadow-raised);
+  }
+
+  .card__accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 4px;
+    width: 64px;
+    background: var(--accent-line-on-light);
+    border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  }
+
+  .card--green .card__accent {
+    background: var(--accent-line);
+  }
+</style>

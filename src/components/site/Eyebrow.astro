@@ -1,0 +1,25 @@
+---
+interface Props {
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+
+const { tone = 'light', class: className } = Astro.props;
+---
+
+<div class:list={['eyebrow', tone === 'dark' && 'eyebrow--dark', className]}><slot /></div>
+
+<style>
+  .eyebrow {
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-eyebrow);
+    margin-bottom: 14px;
+  }
+
+  .eyebrow--dark {
+    color: var(--text-accent-on-dark);
+  }
+</style>

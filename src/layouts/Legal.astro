@@ -1,0 +1,162 @@
+---
+import Base from './Base.astro';
+import Eyebrow from '../components/site/Eyebrow.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+  toc: Array<{ id: string; label: string }>;
+}
+
+const { title, description, updated, toc } = Astro.props;
+---
+
+<Base title={`Averis, ${title}`} description={description}>
+  <div class="wrap legal__head">
+    <Eyebrow>Legal</Eyebrow>
+    <h1 class="legal__title">{title}</h1>
+    <p class="legal__intro">{description}</p>
+    <p class="legal__updated">Last updated {updated}</p>
+  </div>
+
+  <div class="doc">
+    <nav class="toc" aria-label="On this page">
+      {toc.map((t) => <a href={`#${t.id}`}>{t.label}</a>)}
+    </nav>
+    <div class="prose">
+      <slot />
+      <div class="notice">
+        <strong>Draft for counsel review.</strong> This document is a structural and editorial template written to the
+        Averis brand voice. It is not legal advice and has not been reviewed by an attorney. Have counsel confirm every
+        clause, jurisdiction, retention period, and statutory reference before publication.
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style is:global>
+  .legal__head {
+    padding-top: 56px;
+  }
+
+  .legal__title {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .legal__intro {
+    margin-top: 14px;
+    font-size: var(--text-body-lg);
+    max-width: var(--measure);
+  }
+
+  .legal__updated {
+    font-size: var(--text-caption);
+    color: var(--text-faint);
+  }
+
+  /* The 40px horizontal padding must match .wrap, or the sidebar misaligns
+     with the heading above it. */
+  .doc {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 56px;
+    padding: 48px 40px 80px;
+    max-width: var(--site-max);
+    margin: 0 auto;
+  }
+
+  .toc {
+    position: sticky;
+    top: 106px;
+    align-self: start;
+    font-size: var(--text-body-sm);
+  }
+
+  .toc a {
+    display: block;
+    padding: 6px 0 6px 12px;
+    color: var(--text-muted);
+    border-left: 2px solid transparent;
+  }
+
+  .toc a:hover {
+    color: var(--text-heading);
+    border-left-color: var(--accent-line-on-light);
+  }
+
+  .prose section {
+    padding: 26px 0;
+    border-top: 1px solid var(--border-hairline);
+    max-width: var(--measure);
+  }
+
+  .prose section:first-of-type {
+    border-top: none;
+  }
+
+  .prose h2 {
+    margin: 0 0 10px;
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+
+  .prose p,
+  .prose li {
+    font-size: var(--text-body-md);
+    margin: 0 0 12px;
+  }
+
+  .prose ul {
+    margin: 0 0 12px;
+    padding-left: 20px;
+  }
+
+  .prose li {
+    margin-bottom: 7px;
+  }
+
+  .notice {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-xl);
+    padding: 20px 22px;
+    font-size: var(--text-body-sm);
+    color: var(--text-muted);
+    margin-top: 8px;
+    max-width: var(--measure);
+  }
+
+  .notice strong {
+    color: var(--text-heading);
+  }
+
+  @media print {
+    .site-header,
+    .toc,
+    .site-footer {
+      display: none;
+    }
+
+    .doc {
+      grid-template-columns: 1fr;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .doc {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 34px var(--section-pad-x-sm) 56px;
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+</style>

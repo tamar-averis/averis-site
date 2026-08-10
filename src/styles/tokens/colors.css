@@ -1,0 +1,66 @@
+:root{
+  /* Base palette — from Averis Brand Guidelines v1 §04 */
+  --averis-harbor-green:#16473F;
+  --averis-pine:#1E5A4E;
+  --averis-deep-pine:#0F3630;
+  --averis-champagne:#E4C58A;
+  --averis-champagne-deep:#C79A4E;
+  --averis-bone:#F5F2EB;
+  --averis-sand:#E7E0D2;
+  --averis-charcoal:#1D211F;
+  /* Extended neutrals (derived from the guidelines document's own greys) */
+  --averis-slate:#3F4A45;
+  --averis-slate-mid:#4A544E;
+  --averis-slate-light:#7A847E;
+  --averis-mist:#8A948E;
+  --averis-page:#EDEEEA;
+  --averis-white:#FFFFFF;
+  --averis-green-on-dark-sub:#CCD8D2;
+  --averis-green-on-dark-mute:#8FA39B;
+
+  /* Semantic surfaces */
+  --surface-page:var(--averis-page);
+  --surface-card:var(--averis-white);
+  --surface-raised:var(--averis-bone);
+  --surface-neutral:var(--averis-sand);
+  --surface-inverse:var(--averis-harbor-green);
+  --surface-inverse-deep:var(--averis-deep-pine);
+
+  /* Semantic text */
+  --text-heading:var(--averis-harbor-green);
+  --text-body:var(--averis-slate);
+  --text-strong:var(--averis-charcoal);
+  --text-muted:var(--averis-slate-light);
+  --text-faint:var(--averis-mist);
+  --text-eyebrow:var(--averis-pine);
+  --text-on-inverse:var(--averis-bone);
+  --text-on-inverse-sub:var(--averis-green-on-dark-sub);
+  --text-on-inverse-mute:var(--averis-green-on-dark-mute);
+  --text-accent:var(--averis-champagne-deep);
+  --text-accent-on-dark:var(--averis-champagne);
+
+  /* Semantic accents & lines */
+  --accent-line:var(--averis-champagne);
+  --accent-line-on-light:var(--averis-champagne-deep);
+  --border-hairline:rgba(22,71,63,.10);
+  --border-soft:rgba(22,71,63,.14);
+  --border-strong:rgba(22,71,63,.30);
+  --border-on-inverse:rgba(245,242,235,.18);
+  --tint-green-05:rgba(22,71,63,.05);
+  --tint-green-03:rgba(22,71,63,.03);
+  --tint-champagne-16:rgba(228,197,138,.16);
+
+  /* Semantic status — muted, never alarmist. Red is reserved for destructive UI only. */
+  --status-proven:var(--averis-harbor-green);
+  --status-review:var(--averis-champagne-deep);
+  --status-neutral:var(--averis-slate-light);
+  --status-critical:#B4573A;
+  --status-critical-tint:rgba(199,90,60,.05);
+  --status-critical-border:rgba(199,90,60,.18);
+
+  /* Interaction */
+  --interactive-primary:var(--averis-harbor-green);
+  --interactive-primary-hover:var(--averis-pine);
+  --interactive-primary-active:var(--averis-deep-pine);
+  --focus-ring:var(--averis-champagne-deep);
+}

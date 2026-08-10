@@ -1,0 +1,9 @@
+:root{
+  --radius-xs:3px;    /* the affirmation line cap */
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:12px;
+  --radius-xl:14px;   /* cards, tiles, specs */
+  --radius-icon:22px; /* app icon tile */
+  --radius-pill:999px;
+}

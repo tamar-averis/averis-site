@@ -1,0 +1,76 @@
+---
+interface Props {
+  label?: string;
+  name?: string;
+  id?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  class?: string;
+}
+
+const { label, name, id = name, checked = false, disabled = false, class: className } = Astro.props;
+---
+
+<label class:list={['switch', disabled && 'switch--disabled', className]} for={id}>
+  <input class="switch__native" type="checkbox" role="switch" id={id} name={name} checked={checked} disabled={disabled} />
+  <span class="switch__track">
+    <span class="switch__knob"></span>
+  </span>
+  {label && <span>{label}</span>}
+</label>
+
+<style>
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: var(--text-body-md);
+    color: var(--text-strong);
+  }
+
+  .switch--disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .switch__native {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .switch__track {
+    width: 38px;
+    height: 22px;
+    border-radius: var(--radius-pill);
+    padding: 2px;
+    background: var(--averis-sand);
+    transition: background var(--duration-base) var(--ease-standard);
+  }
+
+  .switch__knob {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 54, 48, 0.25);
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  .switch__native:checked + .switch__track {
+    background: var(--interactive-primary);
+  }
+
+  .switch__native:checked + .switch__track .switch__knob {
+    background: var(--accent-line);
+    transform: translateX(16px);
+  }
+
+  .switch__native:focus-visible + .switch__track {
+    box-shadow: var(--ring-focus);
+  }
+</style>

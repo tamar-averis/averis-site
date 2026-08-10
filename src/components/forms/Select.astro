@@ -1,0 +1,35 @@
+---
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  label?: string;
+  hint?: string;
+  options?: Array<Option | string>;
+  name?: string;
+  id?: string;
+  value?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const { label, hint, options = [], name, id = name, value, disabled = false, class: className } = Astro.props;
+
+const normalized: Option[] = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
+---
+
+<div class:list={['field', disabled && 'field--disabled', className]}>
+  {
+    label && (
+      <label class="field__label" for={id}>
+        {label}
+        {hint && <span class="field__hint">{hint}</span>}
+      </label>
+    )
+  }
+  <select class="field__select" id={id} name={name} disabled={disabled}>
+    {normalized.map((o) => <option value={o.value} selected={o.value === value}>{o.label}</option>)}
+  </select>
+</div>
