@@ -1,14 +1,12 @@
 /* Where the contact form goes.
  *
- * Unresolved by design. Set FORM_ENDPOINT to a first-party endpoint that
- * accepts a JSON POST and forwards to INBOX. Until it is set, the form
- * validates and runs its full state machine but falls through to the error
- * state, which offers the direct address.
- *
- * A third-party relay (Formspree, Getform, Basin) would put a vendor between a
- * provider and Averis. The no-PHI warning stays on the form either way, and
- * counsel should approve the vendor before one is used. */
-export const FORM_ENDPOINT = '';
+ * Formspree relays submissions to INBOX. That puts a third party between a
+ * provider and Averis, which is acceptable only because the form collects no
+ * PHI and says so; the secure channel promised at intake is separate. Formspree
+ * will not sign a BAA, so do not add a free-text field here without revisiting
+ * the vendor. Clearing FORM_ENDPOINT returns the form to its error state, which
+ * offers the direct address. */
+export const FORM_ENDPOINT = 'https://formspree.io/f/xvkpvrdr';
 
 export const INBOX = 'info@averisanalytics.com';
 export const PHONE = '+1 (312) 555-0148';
