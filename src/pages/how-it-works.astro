@@ -46,11 +46,34 @@ const MANIFEST = [
   ['835 remittance', 'sha256:b120\u20269ce4', '1,208,441 lines'],
   ['Clinical documentation index', 'sha256:77ad\u202630f1', '214,882 documents'],
 ];
+
+const COMPLIANCE = [
+  [
+    'OIG compliance program',
+    'scale',
+    'The seven elements: written policies, a named compliance officer, training, reporting channels, auditing, enforcement, and corrective action. We help you stand each one up and evidence that it operates.',
+  ],
+  [
+    'HIPAA privacy and security',
+    'shield-check',
+    'Risk analysis, administrative and technical safeguards, workforce training, business associate agreements, and breach notification procedures your team can follow without a consultant in the room.',
+  ],
+  [
+    'Coding and billing accuracy',
+    'file-text',
+    'Documentation standards and an internal review cadence, so coding and medical necessity hold up on their own terms long before a payer asks about them.',
+  ],
+  [
+    'Payer contract obligations',
+    'clock',
+    'Timely filing rules, audit-response duties, and reporting requirements, tracked contract by contract so every obligation has an owner and a date.',
+  ],
+];
 ---
 
 <Base
   title="Averis, How it works"
-  description="Four steps, one standard: intake, extraction, analysis, and a cited rebuttal packet your counsel can file."
+  description="Four steps, one standard: intake, extraction, analysis, and a cited rebuttal packet your counsel can file. Plus compliance requirements we help you implement and monitor."
   page="method"
 >
   <Section tone="green" class="method-hero">
@@ -210,6 +233,40 @@ const MANIFEST = [
         </Card>
       </div>
     </Tabs>
+  </Section>
+
+  <Section tone="light">
+    <Eyebrow>Compliance</Eyebrow>
+    <h2 class="compliance__heading">The strongest rebuttal is a record that was already in order.</h2>
+    <p class="compliance__lead">
+      Defending an allegation is where we start, not where we stop. We help you put your compliance requirements into
+      practice and keep them there, holding the record to the same standard before a payer asks as we would after.
+    </p>
+
+    <div class="compliance">
+      {
+        COMPLIANCE.map(([t, ic, d]) => (
+          <Card padding={24}>
+            <Icon name={ic} size={20} color="var(--text-heading)" />
+            <h3 class="compliance__title">{t}</h3>
+            <p class="compliance__body">{d}</p>
+          </Card>
+        ))
+      }
+    </div>
+
+    <Card tone="sand" padding={28} class="monitoring">
+      <div class="monitoring__inner">
+        <Icon name="line-chart" size={20} color="var(--accent-line-on-light)" class="monitoring__icon" />
+        <div>
+          <h3 class="monitoring__title">Implementation is one day. Monitoring is every day after.</h3>
+          <p class="monitoring__body">
+            We set the review cadence with your team and run it alongside them, keeping the documentation current so
+            what you attest to is what the record shows. You stay the owner of your program. We make it provable.
+          </p>
+        </div>
+      </div>
+    </Card>
   </Section>
 </Base>
 
@@ -495,6 +552,65 @@ const MANIFEST = [
     text-align: right;
   }
 
+  /* Compliance */
+  .compliance__heading {
+    font-size: var(--text-h2);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+    max-width: 700px;
+  }
+
+  .compliance__lead {
+    margin-top: 14px;
+    font-size: var(--text-body-lg);
+    color: var(--text-body);
+    max-width: var(--measure);
+  }
+
+  .compliance {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .compliance__title {
+    font-size: var(--text-h3);
+    font-weight: 600;
+    margin-top: 16px;
+  }
+
+  .compliance__body {
+    margin-top: 8px;
+    font-size: var(--text-body-md);
+  }
+
+  :global(.monitoring) {
+    margin-top: 18px;
+  }
+
+  .monitoring__inner {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .monitoring__inner :global(.monitoring__icon) {
+    flex: none;
+    margin-top: 3px;
+  }
+
+  .monitoring__title {
+    font-size: var(--text-h3);
+    font-weight: 600;
+  }
+
+  .monitoring__body {
+    margin-top: 8px;
+    font-size: var(--text-body-md);
+    max-width: var(--measure);
+  }
+
   /* Responsive */
   @media (max-width: 1000px) {
     .method-hero__heading {
@@ -517,7 +633,8 @@ const MANIFEST = [
       font-size: 34px;
     }
 
-    .steps {
+    .steps,
+    .compliance {
       grid-template-columns: 1fr;
     }
 
