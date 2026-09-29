@@ -5,6 +5,7 @@ interface Props {
   disabled?: boolean;
   fullWidth?: boolean;
   href?: string;
+  target?: string;
   type?: 'button' | 'submit' | 'reset';
   id?: string;
   class?: string;
@@ -17,11 +18,15 @@ const {
   disabled = false,
   fullWidth = false,
   href,
+  target,
   type = 'button',
   id,
   class: className,
   style,
 } = Astro.props;
+
+/* A new tab gets noopener so the opened page cannot reach back via window.opener. */
+const rel = target === '_blank' ? 'noopener' : undefined;
 
 const classes = [
   'btn',
@@ -35,7 +40,15 @@ const classes = [
 
 {
   href ? (
-    <a href={href} id={id} class:list={classes} style={style} aria-disabled={disabled ? 'true' : undefined}>
+    <a
+      href={href}
+      target={target}
+      rel={rel}
+      id={id}
+      class:list={classes}
+      style={style}
+      aria-disabled={disabled ? 'true' : undefined}
+    >
       <slot name="icon-left" />
       <slot />
       <slot name="icon-right" />

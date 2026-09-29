@@ -11,7 +11,7 @@ import Select from '../components/forms/Select.astro';
 import Checkbox from '../components/forms/Checkbox.astro';
 import RadioGroup from '../components/forms/RadioGroup.astro';
 import AffirmationLine from '../components/core/AffirmationLine.astro';
-import { FORM_ENDPOINT, INBOX, PHONE } from '../config';
+import { FORM_ENDPOINT, INBOX, PHONE, CALENDAR_URL } from '../config';
 
 const PAYERS = [
   { value: 'com', label: 'Commercial' },
@@ -54,6 +54,14 @@ const CONTACT_ROWS = [
             </div>
           ))
         }
+
+        <div class="contact__book">
+          <p class="contact__book-note">Prefer to talk it through first?</p>
+          <Button variant="secondary" href={CALENDAR_URL} target="_blank">
+            Book a call
+            <Icon slot="icon-right" name="arrow-right" size={15} />
+          </Button>
+        </div>
       </div>
 
       <Card padding={30}>
@@ -188,6 +196,18 @@ const CONTACT_ROWS = [
     padding: 7px 0;
     font-size: var(--text-body-md);
     color: var(--text-strong);
+  }
+
+  .contact__book {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .contact__book-note {
+    font-size: var(--text-body-md);
+    color: var(--text-body);
+    margin-bottom: 12px;
   }
 
   .form {

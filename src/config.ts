@@ -10,3 +10,7 @@ export const FORM_ENDPOINT = 'https://formspree.io/f/xvkpvrdr';
 
 export const INBOX = 'info@averisanalytics.com';
 export const PHONE = '+1 (312) 555-0148';
+
+/* Google Appointment Schedule. Opens in a new tab rather than embedding, so no
+ * third-party code loads on our pages and the privacy policy stays accurate. */
+export const CALENDAR_URL = 'https://calendar.app.google/61XeDKttsafdUdX97';
