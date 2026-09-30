@@ -6,7 +6,6 @@ import CtaBand from '../components/site/CtaBand.astro';
 import Card from '../components/core/Card.astro';
 import Icon from '../components/core/Icon.astro';
 import Tag from '../components/core/Tag.astro';
-import AffirmationLine from '../components/core/AffirmationLine.astro';
 
 const FOCUS = [
   'Zero-paid adjudications',
@@ -33,35 +32,14 @@ const DELIVER = [
   page="about"
 >
   <Section tone="green" class="about-hero">
-    <div class="about-hero__grid">
-      <div>
-        <Eyebrow tone="dark">Why Averis</Eyebrow>
-        <h1 class="about-hero__heading">
-          Built by someone who has already <span class="affirm-underline">done the work.</span>
-        </h1>
-        <p class="about-hero__lead">
-          Averis exists because the money a provider is owed is recoverable, and because the record almost always
-          supports the provider once someone reads all of it.
-        </p>
-      </div>
-      <Card tone="green" padding={26} class="founder">
-        <div class="founder__monogram" aria-hidden="true">NB</div>
-        <div class="founder__name">Nadav Bernstein</div>
-        <div class="founder__role">Founder &amp; Investor</div>
-        <AffirmationLine tone="dark" width={52} class="founder__rule" />
-        <p class="founder__descriptor">
-          Working with clinics, attorneys, and medical practices on complex payer disputes.
-        </p>
-        <a
-          class="founder__link"
-          href="https://www.linkedin.com/in/nadav-bernstein-45912645/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          LinkedIn profile <Icon name="arrow-right" size={14} />
-        </a>
-      </Card>
-    </div>
+    <Eyebrow tone="dark">Why Averis</Eyebrow>
+    <h1 class="about-hero__heading">
+      Built by someone who has already <span class="affirm-underline">done the work.</span>
+    </h1>
+    <p class="about-hero__lead">
+      Averis exists because the money a provider is owed is recoverable, and because the record almost always supports
+      the provider once someone reads all of it.
+    </p>
   </Section>
 
   <Section tone="light">
@@ -128,13 +106,6 @@ const DELIVER = [
     padding: 72px 0 64px;
   }
 
-  .about-hero__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-    gap: 56px;
-    align-items: start;
-  }
-
   .about-hero__heading {
     font-size: var(--text-display-2);
     font-weight: 800;
@@ -149,64 +120,6 @@ const DELIVER = [
     font-size: var(--text-lead);
     color: var(--text-on-inverse-sub);
     max-width: var(--measure);
-  }
-
-  .about-hero__grid :global(.founder) {
-    background: rgba(245, 242, 235, 0.06);
-    border: 1px solid var(--border-on-inverse);
-    box-shadow: none;
-  }
-
-  .founder__monogram {
-    width: 74px;
-    height: 74px;
-    border-radius: 50%;
-    background: rgba(245, 242, 235, 0.1);
-    border: 1px solid var(--border-on-inverse);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--text-accent-on-dark);
-  }
-
-  .founder__name {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 22px;
-    color: var(--text-on-inverse);
-    margin-top: 18px;
-  }
-
-  .founder__role {
-    font-size: var(--text-body-sm);
-    color: var(--text-accent-on-dark);
-    margin-top: 5px;
-    letter-spacing: 0.02em;
-  }
-
-  .about-hero__grid :global(.founder__rule) {
-    margin: 18px 0;
-  }
-
-  .founder__descriptor {
-    font-size: var(--text-body-sm);
-    color: var(--text-on-inverse-sub);
-  }
-
-  .founder__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 18px;
-    font-size: var(--text-body-sm);
-    color: var(--text-accent-on-dark);
-  }
-
-  .founder__link:hover {
-    color: var(--averis-bone);
   }
 
   /* Background */
@@ -287,7 +200,6 @@ const DELIVER = [
       font-size: 40px;
     }
 
-    .about-hero__grid,
     .background {
       grid-template-columns: 1fr;
       gap: 34px;
