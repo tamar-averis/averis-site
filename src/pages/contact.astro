@@ -24,10 +24,13 @@ const ROLES = [
   { value: 'counsel', label: 'Outside counsel' },
 ];
 
-const CONTACT_ROWS = [
-  ['mail', INBOX],
-  ['phone', PHONE],
-  ['shield-check', 'HIPAA-compliant intake, BAA on request'],
+/* Paid traffic lands here, so the address and number stay real links: the ads
+   side tracks clicks on both as secondary actions. tel: needs the number
+   stripped back to digits and a leading +. */
+const CONTACT_ROWS: [string, string, string | null][] = [
+  ['mail', INBOX, `mailto:${INBOX}`],
+  ['phone', PHONE, `tel:${PHONE.replace(/[^\d+]/g, '')}`],
+  ['shield-check', 'HIPAA-compliant intake, BAA on request', null],
 ];
 ---
 
@@ -47,10 +50,10 @@ const CONTACT_ROWS = [
         </p>
         <AffirmationLine width={90} class="contact__rule" />
         {
-          CONTACT_ROWS.map(([ic, t]) => (
+          CONTACT_ROWS.map(([ic, t, href]) => (
             <div class="contact__row">
               <Icon name={ic} size={16} color="var(--text-faint)" />
-              {ic === 'mail' ? <a href={`mailto:${t}`}>{t}</a> : t}
+              {href ? <a href={href}>{t}</a> : t}
             </div>
           ))
         }
@@ -87,6 +90,7 @@ const CONTACT_ROWS = [
             label="An appeal deadline is already set"
             description="We will prioritize scoping if a date is on the calendar."
           />
+          <input type="hidden" name="gclid" value="" />
           <Button type="submit" size="lg" fullWidth id="analysis-submit">Request an analysis</Button>
           <p class="form__error" id="analysis-error" hidden>
             That did not send. Email us directly at <a href={`mailto:${INBOX}`}>{INBOX}</a>.
@@ -118,6 +122,34 @@ const CONTACT_ROWS = [
   if (form && sent && error && submit && reset) {
     const endpoint = form.dataset.endpoint ?? '';
 
+    /* Google accepts offline conversion imports for 90 days after the click. */
+    const getStoredGclid = () => {
+      try {
+        const s = JSON.parse(localStorage.getItem('gclid') ?? 'null');
+        if (s && Date.now() - s.t < 90 * 864e5) return s.v;
+      } catch {}
+      return '';
+    };
+
+    /* Analytics gets the three low-cardinality selections and nothing else. No
+       name, email, organization, amount or free text reaches the dataLayer:
+       these are healthcare matters and the tags must stay clear of anything
+       personal or health related. */
+    const PAYER_TYPES: Record<string, string> = { com: 'commercial', fed: 'federal', both: 'both' };
+    const ROLES: Record<string, string> = { cfo: 'provider', counsel: 'counsel' };
+
+    const pushConversion = () => {
+      const data = new FormData(form);
+      const w = window as Window & { dataLayer?: Record<string, unknown>[] };
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({
+        event: 'analysis_request_submitted',
+        payer_type: PAYER_TYPES[String(data.get('payer') ?? '')] ?? '',
+        requester_role: ROLES[String(data.get('role') ?? '')] ?? '',
+        appeal_deadline_set: data.get('deadline') !== null,
+      });
+    };
+
     const setState = (state: 'idle' | 'sending' | 'sent' | 'error') => {
       submit.disabled = state === 'sending';
       submit.textContent = state === 'sending' ? 'Sending' : 'Request an analysis';
@@ -131,6 +163,10 @@ const CONTACT_ROWS = [
       if (!form.reportValidity()) return;
 
       setState('sending');
+
+      const gclidField = form.elements.namedItem('gclid') as HTMLInputElement | null;
+      if (gclidField) gclidField.value = getStoredGclid();
+
       const payload = Object.fromEntries(new FormData(form).entries());
 
       if (!endpoint) {
@@ -146,7 +182,14 @@ const CONTACT_ROWS = [
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ ...payload, _subject: `Analysis request, ${payload.org || payload.name}` }),
         });
-        setState(res.ok ? 'sent' : 'error');
+        if (!res.ok) {
+          setState('error');
+          return;
+        }
+        // Only a confirmed success counts, and it fires again on every later
+        // submission made through "Send another".
+        pushConversion();
+        setState('sent');
       } catch {
         setState('error');
       }
