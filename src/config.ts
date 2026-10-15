@@ -1,12 +1,12 @@
 /* Where the contact form goes.
  *
- * Formspree relays submissions to INBOX. That puts a third party between a
- * provider and Averis, which is acceptable only because the form collects no
- * PHI and says so; the secure channel promised at intake is separate. Formspree
- * will not sign a BAA, so do not add a free-text field here without revisiting
- * the vendor. Clearing FORM_ENDPOINT returns the form to its error state, which
- * offers the direct address. */
-export const FORM_ENDPOINT = 'https://formspree.io/f/xvkpvrdr';
+ * HubSpot hosts and stores the submission; the notification routes to INBOX
+ * from inside HubSpot, not from this site. HubSpot will sign a BAA, but ours is
+ * not signed yet, so the no-PHI notice under the form stays until it is. The
+ * secure channel promised at intake is separate either way. */
+export const HUBSPOT_PORTAL_ID = '247601150';
+export const HUBSPOT_FORM_ID = '73c8de9d-9b4b-4d17-a7be-98838d5a6406';
+export const HUBSPOT_REGION = 'na2';
 
 export const INBOX = 'info@averisanalytics.com';
 export const PHONE = '+1 (941) 259-7630';

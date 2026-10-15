@@ -7,9 +7,10 @@ interface Props {
   title: string;
   description: string;
   page?: string;
+  noindex?: boolean;
 }
 
-const { title, description, page } = Astro.props;
+const { title, description, page, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -33,6 +34,7 @@ const { title, description, page } = Astro.props;
     <!-- End Google Tag Manager -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.svg" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
   </head>

@@ -1,0 +1,178 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/site/Section.astro';
+import Eyebrow from '../components/site/Eyebrow.astro';
+import Card from '../components/core/Card.astro';
+import Icon from '../components/core/Icon.astro';
+import Button from '../components/core/Button.astro';
+import AffirmationLine from '../components/core/AffirmationLine.astro';
+import { INBOX, PHONE, CALENDAR_URL } from '../config';
+
+/* Reached only by HubSpot's post-submission redirect, which is what makes a
+   pageview here a reliable conversion signal. Nothing on this page should ever
+   be linked from navigation or indexed. */
+const NEXT: [string, string, string][] = [
+  [
+    'mail',
+    'We confirm by email',
+    'A member of the analysis team replies within one business day, from ' + INBOX + '.',
+  ],
+  [
+    'file-text',
+    'We tell you what we would need',
+    'Usually the allegation letter, the sampling method and the claim set it was drawn from.',
+  ],
+  [
+    'shield-check',
+    'Records move on a secure channel',
+    'We send one before you share anything that identifies a patient. Never by reply to this form.',
+  ],
+];
+---
+
+<Base
+  title="Averis, Request received"
+  description="We have your request and will reply within one business day."
+  noindex
+>
+  <Section tone="bone" class="received">
+    <div class="received__grid">
+      <div>
+        <Eyebrow>Request received</Eyebrow>
+        <h1 class="received__heading">We have it. Now we read it.</h1>
+        <p class="received__body">
+          Your request reached the analysis team. We reply within one business day, and the first read costs you nothing.
+        </p>
+        <AffirmationLine width={90} class="received__rule" />
+        <p class="received__note">
+          If the deadline on your letter is closer than that, call us at <a
+            href={`tel:${PHONE.replace(/[^\d+]/g, '')}`}>{PHONE}</a
+          > and say so.
+        </p>
+
+        <div class="received__book">
+          <p class="received__book-note">Want to talk it through sooner?</p>
+          <Button variant="secondary" href={CALENDAR_URL} target="_blank">
+            Book a call
+            <Icon slot="icon-right" name="arrow-right" size={15} />
+          </Button>
+        </div>
+      </div>
+
+      <Card padding={30}>
+        <h2 class="received__card-heading">What happens next</h2>
+        {
+          NEXT.map(([ic, title, body]) => (
+            <div class="received__step">
+              <Icon name={ic} size={17} color="var(--text-faint)" />
+              <div>
+                <p class="received__step-title">{title}</p>
+                <p class="received__step-body">{body}</p>
+              </div>
+            </div>
+          ))
+        }
+        <p class="received__footnote">
+          Do not send protected health information by email. We will provide a secure channel at intake.
+        </p>
+      </Card>
+    </div>
+  </Section>
+</Base>
+
+<script is:inline>
+  /* The conversion fires here rather than on the form, because a pageview on a
+     page only HubSpot can send you to is a confirmed submission. The Google Ads
+     tag itself lives in the Tag Manager container and listens for this event:
+     no gtag snippet belongs on this site, or every conversion counts twice.
+
+     No parameters. The submission carries names, email addresses and dollar
+     amounts tied to healthcare matters, and none of that belongs in analytics. */
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'analysis_request_submitted' });
+</script>
+
+<style>
+  :global(.received) {
+    padding: 64px 0 80px;
+  }
+
+  .received__grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .received__heading {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .received__body {
+    margin-top: 14px;
+    font-size: var(--text-body-lg);
+    color: var(--text-body);
+  }
+
+  :global(.received .received__rule) {
+    margin: 26px 0;
+  }
+
+  .received__note {
+    font-size: var(--text-body-md);
+    color: var(--text-body);
+  }
+
+  .received__book {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .received__book-note {
+    font-size: var(--text-body-md);
+    color: var(--text-body);
+    margin-bottom: 12px;
+  }
+
+  .received__card-heading {
+    font-size: var(--text-h3);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .received__step {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .received__step-title {
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+  }
+
+  .received__step-body {
+    margin-top: 4px;
+    font-size: var(--text-body-sm);
+    color: var(--text-body);
+  }
+
+  .received__footnote {
+    margin-top: 20px;
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 1000px) {
+    .received__grid {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+  }
+</style>

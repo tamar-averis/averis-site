@@ -5,24 +5,8 @@ import Eyebrow from '../components/site/Eyebrow.astro';
 import Card from '../components/core/Card.astro';
 import Icon from '../components/core/Icon.astro';
 import Button from '../components/core/Button.astro';
-import Toast from '../components/feedback/Toast.astro';
-import Input from '../components/forms/Input.astro';
-import Select from '../components/forms/Select.astro';
-import Checkbox from '../components/forms/Checkbox.astro';
-import RadioGroup from '../components/forms/RadioGroup.astro';
 import AffirmationLine from '../components/core/AffirmationLine.astro';
-import { FORM_ENDPOINT, INBOX, PHONE, CALENDAR_URL } from '../config';
-
-const PAYERS = [
-  { value: 'com', label: 'Commercial' },
-  { value: 'fed', label: 'Federal (Medicare / Medicaid)' },
-  { value: 'both', label: 'Both' },
-];
-
-const ROLES = [
-  { value: 'cfo', label: 'Provider finance or compliance' },
-  { value: 'counsel', label: 'Outside counsel' },
-];
+import { INBOX, PHONE, CALENDAR_URL, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, HUBSPOT_REGION } from '../config';
 
 /* Paid traffic lands here, so the address and number stay real links: the ads
    side tracks clicks on both as secondary actions. tel: needs the number
@@ -68,139 +52,47 @@ const CONTACT_ROWS: [string, string, string | null][] = [
       </div>
 
       <Card padding={30}>
-        <form id="analysis-form" class="form" novalidate data-endpoint={FORM_ENDPOINT} data-inbox={INBOX}>
-          <div class="form__pair">
-            <Input label="Name" name="name" placeholder="Jordan Reyes" required />
-            <Input label="Work email" name="email" type="email" placeholder="jreyes@provider.org" required />
-          </div>
-          <div class="form__pair">
-            <Input label="Organization" name="org" placeholder="Northline Health" />
-            <Select label="Payer type" name="payer" options={PAYERS} value="com" />
-          </div>
-          <Input
-            label="Alleged overpayment / restriction value"
-            name="amount"
-            hint="Optional"
-            prefix="$"
-            placeholder="0.00"
-          />
-          <RadioGroup label="Your role" name="role" options={ROLES} value="cfo" />
-          <Checkbox
-            name="deadline"
-            label="An appeal deadline is already set"
-            description="We will prioritize scoping if a date is on the calendar."
-          />
-          <input type="hidden" name="gclid" value="" />
-          <Button type="submit" size="lg" fullWidth id="analysis-submit">Request an analysis</Button>
-          <p class="form__error" id="analysis-error" hidden>
-            That did not send. Email us directly at <a href={`mailto:${INBOX}`}>{INBOX}</a>.
-          </p>
-          <p class="form__footnote">
-            Do not send protected health information through this form. We will provide a secure channel at intake.
-          </p>
-        </form>
-
-        <div id="analysis-sent" class="sent" hidden>
-          <Toast tone="proven" title="Request received" message="We reply within one business day." />
-          <p class="sent__body">
-            A member of the analysis team will confirm what data we would need to test the allegation.
-          </p>
-          <Button variant="secondary" size="sm" id="analysis-reset">Send another</Button>
+        {/* Runs during parse, so it lands before the deferred HubSpot embed
+            below. HubSpot pre-fills a hidden field from a matching query
+            parameter, so putting the stored click ID back on the URL is how the
+            value reaches the submission. A gclid is an ad identifier, not
+            personal or health data, so it is safe in the address bar. */}
+        <script is:inline>
+          (function () {
+            try {
+              var s = JSON.parse(localStorage.getItem('gclid') || 'null');
+              /* Google accepts offline conversion imports for 90 days after the click. */
+              if (!s || Date.now() - s.t >= 90 * 864e5) return;
+              var url = new URL(location.href);
+              if (url.searchParams.get('gclid')) return;
+              url.searchParams.set('gclid', s.v);
+              history.replaceState(null, '', url);
+            } catch (e) {}
+          })();
+        </script>
+        <script src={`https://js-na2.hsforms.net/forms/embed/${HUBSPOT_PORTAL_ID}.js`} defer is:inline></script>
+        <div
+          class="hs-form-frame"
+          data-region={HUBSPOT_REGION}
+          data-form-id={HUBSPOT_FORM_ID}
+          data-portal-id={HUBSPOT_PORTAL_ID}
+        >
         </div>
+        <p class="form__footnote">
+          Do not send protected health information through this form. We will provide a secure channel at intake.
+        </p>
+        <p class="form__fallback">
+          If the form does not load, email us at <a href={`mailto:${INBOX}`}>{INBOX}</a>.
+        </p>
       </Card>
     </div>
   </Section>
 </Base>
 
-<script>
-  const form = document.getElementById('analysis-form') as HTMLFormElement | null;
-  const sent = document.getElementById('analysis-sent');
-  const error = document.getElementById('analysis-error');
-  const submit = document.getElementById('analysis-submit') as HTMLButtonElement | null;
-  const reset = document.getElementById('analysis-reset');
-
-  if (form && sent && error && submit && reset) {
-    const endpoint = form.dataset.endpoint ?? '';
-
-    /* Google accepts offline conversion imports for 90 days after the click. */
-    const getStoredGclid = () => {
-      try {
-        const s = JSON.parse(localStorage.getItem('gclid') ?? 'null');
-        if (s && Date.now() - s.t < 90 * 864e5) return s.v;
-      } catch {}
-      return '';
-    };
-
-    /* Analytics gets the three low-cardinality selections and nothing else. No
-       name, email, organization, amount or free text reaches the dataLayer:
-       these are healthcare matters and the tags must stay clear of anything
-       personal or health related. */
-    const PAYER_TYPES: Record<string, string> = { com: 'commercial', fed: 'federal', both: 'both' };
-    const ROLES: Record<string, string> = { cfo: 'provider', counsel: 'counsel' };
-
-    const pushConversion = () => {
-      const data = new FormData(form);
-      const w = window as Window & { dataLayer?: Record<string, unknown>[] };
-      w.dataLayer = w.dataLayer || [];
-      w.dataLayer.push({
-        event: 'analysis_request_submitted',
-        payer_type: PAYER_TYPES[String(data.get('payer') ?? '')] ?? '',
-        requester_role: ROLES[String(data.get('role') ?? '')] ?? '',
-        appeal_deadline_set: data.get('deadline') !== null,
-      });
-    };
-
-    const setState = (state: 'idle' | 'sending' | 'sent' | 'error') => {
-      submit.disabled = state === 'sending';
-      submit.textContent = state === 'sending' ? 'Sending' : 'Request an analysis';
-      error.hidden = state !== 'error';
-      form.hidden = state === 'sent';
-      sent.hidden = state !== 'sent';
-    };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return;
-
-      setState('sending');
-
-      const gclidField = form.elements.namedItem('gclid') as HTMLInputElement | null;
-      if (gclidField) gclidField.value = getStoredGclid();
-
-      const payload = Object.fromEntries(new FormData(form).entries());
-
-      if (!endpoint) {
-        // No delivery path configured yet. Fall through to the error state,
-        // which offers the direct address.
-        setState('error');
-        return;
-      }
-
-      try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ ...payload, _subject: `Analysis request, ${payload.org || payload.name}` }),
-        });
-        if (!res.ok) {
-          setState('error');
-          return;
-        }
-        // Only a confirmed success counts, and it fires again on every later
-        // submission made through "Send another".
-        pushConversion();
-        setState('sent');
-      } catch {
-        setState('error');
-      }
-    });
-
-    reset.addEventListener('click', () => {
-      form.reset();
-      setState('idle');
-    });
-  }
-</script>
+{/* The conversion event is not fired here. HubSpot redirects to
+    /request-received on success and the event fires there, so a submission is
+    counted once, on a page only a real submission can reach. Firing on
+    HubSpot's onFormSubmitted callback as well would double every conversion. */}
 
 <style>
   /* .contact rides on <Section>, which carries its own scope and not this
@@ -253,49 +145,22 @@ const CONTACT_ROWS: [string, string, string | null][] = [
     margin-bottom: 12px;
   }
 
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  /* Reserves height so the card does not jump when the embed renders. */
+  .hs-form-frame {
+    min-height: 420px;
   }
 
-  .form__pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .form__error {
-    font-size: var(--text-body-sm);
-    color: var(--status-critical);
-  }
-
-  .form__footnote {
+  .form__footnote,
+  .form__fallback {
     font-size: var(--text-caption);
     color: var(--text-muted);
-  }
-
-  .sent {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    align-items: flex-start;
-  }
-
-  .sent__body {
-    font-size: var(--text-body-md);
+    margin-top: 14px;
   }
 
   @media (max-width: 1000px) {
     .contact__grid {
       grid-template-columns: 1fr;
       gap: 34px;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .form__pair {
-      grid-template-columns: 1fr;
     }
   }
 </style>
